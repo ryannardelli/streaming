@@ -101,6 +101,7 @@ body {
 .container-about-movies h2 {
     font-size: 1.8rem;
     font-weight: bolder;
+    padding: 1.8rem 0.5rem;
 }
 
 /* p {
