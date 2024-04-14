@@ -1,0 +1,191 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    background:#0D1827;
+    color: #E5E5E5;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    background-image: url(http://image.tmdb.org/t/p/original/aNK6MA5EApIo0UJE7ZWSYcZBJKy.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+   display: flex;
+   align-items: center;
+   gap: 30px;
+   max-width: 1200px;
+   backdrop-filter: blur(10px);
+   -webkit-backdrop-filter: blur(5px);
+   position: absolute;
+   background: transparent;
+   padding: 15px 2px;
+   color: #fff;
+   border-radius: 10px;
+}
+
+.container_overview_movie {
+    max-width: 600px;
+}
+
+.container_overview_movie h1 {
+    font-size: 2.5rem;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.container_overview_movie p {
+    text-shadow: 1px 1px 2px #000;
+}
+
+.img img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.container-vote {
+    display: flex;
+    align-items: center;
+}
+
+.avaliation {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.estrela {
+    font-size: 25px;
+    color: #ffe500;
+}
+
+.container-about-movies {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 0.5rem;
+    gap: 10px;
+    margin-inline: 10px;
+}
+
+.container-about-movies h2 {
+    font-size: 1.8rem;
+    font-weight: bolder;
+}
+
+/* p {
+    font-weight: 300;
+    font-size: 1rem;
+    text-shadow: 1px 1px 2px #000;
+} */
+
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.swiper {
+    width: 100%;
+    height: 100%;
+    margin: 20px auto;
+}
+
+.append-buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.append-buttons button {
+    display: inline-block;
+    cursor: pointer;
+    border: 1px solid #007aff;
+    color: #007aff;
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin: 0 10px;
+    font-size: 13px;
+}
+
+.btn-watch-trailer {
+    margin: 1rem 0;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.432);
+}
+
+.iframe-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 100;
+}
+
+.iframe-video {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.iframe {
+    max-width: 800px;
+    object-fit: cover;
+}
+
+.btn-close {
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    font-size: 2rem;
+    color: #fff;
+    padding: 0.1rem 0.3rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+    .swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
