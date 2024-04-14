@@ -104,6 +104,7 @@ body {
     padding: 1.5rem 0.5rem;
     gap: 10px;
     margin-inline: 10px;
+    width: 100%;
 }
 
 .container-about-movies h2 {
