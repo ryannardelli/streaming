@@ -7,6 +7,7 @@ const swiper_wrapper = document.querySelector('.swiper-wrapper');
 const p_overview_about_movie = document.querySelector('.overview-about-movie');
 const title_of_movie = document.querySelector('.title_movie');
 const date_movie = document.querySelector('.date_movie');
+const vote = document.querySelector('.vote');
 
 function createImg() {
     const img = document.createElement('img');
@@ -61,7 +62,6 @@ async function getResponseApi() {
     try {
         const response = await fetch(`https://api.themoviedb.org/3/movie/550/videos?api_key=${apiKey}&language=pt-BR`, options);
         const data = await response.json();
-        // console.log(data);
     } catch(error) {
         console.log(error);
     }
@@ -77,7 +77,6 @@ async function getResponseApi() {
         const data_configuration = await response.json();
         size = data_configuration.images.poster_sizes[6]; // tamanho original
         base_url = data_configuration.images.base_url;
-        console.log(data_configuration);
     } catch(error) {
         console.log(error);
     }
@@ -106,12 +105,13 @@ async function getResponseApi() {
     title_of_movie.innerHTML = about_movie[1].title;
     date_movie.innerHTML = about_movie[1].release_date.slice(0, 4);
     p_overview_about_movie.innerHTML = about_movie[1].overview;
-
+    const vote_public = about_movie[1].vote_average;
+    vote.innerHTML = vote_public.toFixed(1);
+    
     // filmes nos cinemas agora
     try {
         const response_api = await fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=pt-BR', options);
         const data_api = await response_api.json();
-        console.log(data_api);
     } catch(error) {
         console.log(error);
     }
@@ -121,7 +121,7 @@ async function getResponseApi() {
 
 getResponseApi();
 
-// script que mostra e esconde iframe
+// script que mostra e esconde o iframe
 btn_watch_trailer.addEventListener('click', () => {
     container_iframe.style.display = 'block';
 });
