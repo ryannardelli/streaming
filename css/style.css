@@ -205,6 +205,12 @@ body {
     cursor: pointer;
 }
 
+/* .style_iframe {
+    height: 315;
+    width: 560;
+    border: none;
+} */
+
 /* tela de celular */
 @media screen and (max-width: 600px) {
     .swiper-slide img {

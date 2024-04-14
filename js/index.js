@@ -1,5 +1,5 @@
 const apiKey = 'df475aedfe842e898fa3da1591fa3f01';
-const iframe = document.querySelector('iframe');
+const iframe_container = document.querySelector('.iframe-video');
 const btn_watch_trailer = document.querySelector('.btn-watch-trailer');
 const container_iframe = document.querySelector('.iframe-container');
 const close_button = document.querySelector('.btn-close');
@@ -8,6 +8,7 @@ const p_overview_about_movie = document.querySelector('.overview-about-movie');
 const title_of_movie = document.querySelector('.title_movie');
 const date_movie = document.querySelector('.date_movie');
 const vote = document.querySelector('.vote');
+const url_youtube = 'https://www.youtube.com/embed/';
 
 function createImg() {
     const img = document.createElement('img');
@@ -28,6 +29,21 @@ function insertDivWithContent(src_img) {
     div.classList.add('swiper-slide');
     return div;
 };
+
+function createIframe() {
+    const iframe = document.createElement('iframe');
+    return iframe;
+}
+
+function insertIframe(src) {
+    const iframe = createIframe();
+    iframe.src = src;
+    iframe.width = '560';
+    iframe.height = '315';
+    iframe.style.border = 'none';
+    iframe_container.appendChild(iframe);
+    return iframe_container;
+}
 
 const swiper = new Swiper(".mySwiper", {
     slidesPerView: 3,
@@ -106,8 +122,10 @@ async function getResponseApi() {
     date_movie.innerHTML = about_movie[1].release_date.slice(0, 4);
     p_overview_about_movie.innerHTML = about_movie[1].overview;
     const vote_public = about_movie[1].vote_average;
-    vote.innerHTML = vote_public.toFixed(1);
-    
+    vote.innerHTML = vote_public.toFixed(1).replace(/\./g, ',');
+
+    // console.log(about_movie[1]);
+
     // filmes nos cinemas agora
     try {
         const response_api = await fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=pt-BR', options);
@@ -116,7 +134,19 @@ async function getResponseApi() {
         console.log(error);
     }
 
-
+    // consulta do video do filme por id
+    try {
+        // pendente
+        const response = await fetch(`https://api.themoviedb.org/3/movie/
+        1011985/videos?api_key=${apiKey}`, options);
+        const data_api = await response.json();
+        const api_with_video = data_api.results.map(item => item);
+        // api_with_video.forEach(item => console.log(item));
+        // console.log(url_youtube +  api_with_video[4].key);
+        insertIframe(url_youtube + api_with_video[4].key);
+    } catch(error) {
+        console.log(error);
+    }
 }
 
 getResponseApi();
