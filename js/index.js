@@ -93,6 +93,7 @@ async function getResponseApi() {
         const data_configuration = await response.json();
         size = data_configuration.images.poster_sizes[6]; // tamanho original
         base_url = data_configuration.images.base_url;
+        console.log(data_configuration);
     } catch(error) {
         console.log(error);
     }
@@ -141,6 +142,15 @@ async function getResponseApi() {
         const data_api = await response.json();
         const api_with_video = data_api.results.map(item => item);
         insertIframe(url_youtube + api_with_video[4].key);
+    } catch(error) {
+        console.log(error);
+    }
+
+    try {
+        const response = await fetch(`https://api.themoviedb.org/3/movie/
+        1011985?api_key=${apiKey}`);
+        const data_api = await response.json();
+        console.log(data_api);
     } catch(error) {
         console.log(error);
     }

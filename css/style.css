@@ -21,7 +21,6 @@ body {
     width: 100%;
     min-height: 100vh;
     background: var(--color-background);
-    color: #E5E5E5;
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     font-size: 14px;
     margin: 0;
@@ -29,7 +28,7 @@ body {
 }
 
 .container {
-    background-image: url(http://image.tmdb.org/t/p/original/aNK6MA5EApIo0UJE7ZWSYcZBJKy.jpg);
+    background-image: url(http://image.tmdb.org/t/p/original/uDosHOFFWtF5YteBRygHALFqLw2.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -45,7 +44,8 @@ body {
    align-items: center;
    gap: 30px;
    max-width: 1200px;
-   backdrop-filter: blur(10px);
+   height: 100%;
+   backdrop-filter: blur(5px);
    -webkit-backdrop-filter: blur(5px);
    position: absolute;
    background: transparent;
@@ -72,14 +72,21 @@ body {
 .date_movie {
     font-size: 1.5rem;
     margin: 0.8rem 0;
+    text-shadow: 1px 1px 2px #000;
+    font-weight: 300;
 }
 
 .container-vote {
     display: flex;
     align-items: center;
-    gap: 5px;
-    max-width: 100px;
+    gap: 20px;
     margin-bottom: 0.8rem;
+}
+
+.about_vote {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .estrela {
@@ -90,12 +97,15 @@ body {
 .vote {
     font-size: 1.5rem;
     font-weight: 500;
+    text-shadow: 1px 1px 2px #000;
+    font-weight: 300;
 }
 
 .overview-about-movie {
     text-shadow: 1px 1px 2px #000;
     line-height: 1.5rem;
     margin-bottom: 0.8rem;
+    font-size: 1.3rem;
 }
 
 .container-about-movies {
