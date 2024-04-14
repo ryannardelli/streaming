@@ -104,7 +104,6 @@ body {
     padding: 1.5rem 0.5rem;
     gap: 10px;
     margin-inline: 10px;
-    width: 100%;
 }
 
 .container-about-movies h2 {
@@ -204,12 +203,6 @@ body {
     text-decoration: none;
     cursor: pointer;
 }
-
-/* .style_iframe {
-    height: 315;
-    width: 560;
-    border: none;
-} */
 
 /* tela de celular */
 @media screen and (max-width: 600px) {

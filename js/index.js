@@ -1,5 +1,5 @@
 const apiKey = 'df475aedfe842e898fa3da1591fa3f01';
-const iframe_container = document.querySelector('.iframe-video');
+const iframe_video = document.querySelector('.iframe-video');
 const btn_watch_trailer = document.querySelector('.btn-watch-trailer');
 const container_iframe = document.querySelector('.iframe-container');
 const close_button = document.querySelector('.btn-close');
@@ -41,8 +41,8 @@ function insertIframe(src) {
     iframe.width = '560';
     iframe.height = '315';
     iframe.style.border = 'none';
-    iframe_container.appendChild(iframe);
-    return iframe_container;
+    iframe_video.appendChild(iframe);
+    return iframe_video;
 }
 
 const swiper = new Swiper(".mySwiper", {
@@ -136,13 +136,10 @@ async function getResponseApi() {
 
     // consulta do video do filme por id
     try {
-        // pendente
         const response = await fetch(`https://api.themoviedb.org/3/movie/
         1011985/videos?api_key=${apiKey}`, options);
         const data_api = await response.json();
         const api_with_video = data_api.results.map(item => item);
-        // api_with_video.forEach(item => console.log(item));
-        // console.log(url_youtube +  api_with_video[4].key);
         insertIframe(url_youtube + api_with_video[4].key);
     } catch(error) {
         console.log(error);
@@ -158,4 +155,5 @@ btn_watch_trailer.addEventListener('click', () => {
 
 close_button.addEventListener('click', () => {
     container_iframe.style.display = 'none';
+    iframe_container.style.display = 'none';
 });
