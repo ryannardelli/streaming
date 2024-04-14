@@ -1,14 +1,26 @@
+/* Color Theme Swatches in Hex
+.the-robert-2-hex { color: #EADBC6; }
+.the-robert-3-hex { color: #E9AD63; }
+*/
+
+:root {
+    --color-background: #0D1827;
+    --color-font: #E5E5E5;
+    --color-button: #264775;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
+    color: var(--color-font);
 }
 
 body {
     width: 100%;
     min-height: 100vh;
-    background:#0D1827;
+    background: var(--color-background);
     color: #E5E5E5;
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     font-size: 14px;
@@ -37,7 +49,7 @@ body {
    -webkit-backdrop-filter: blur(5px);
    position: absolute;
    background: transparent;
-   padding: 15px 2px;
+   padding: 30px;
    color: #fff;
    border-radius: 10px;
 }
@@ -64,17 +76,18 @@ body {
 .container-vote {
     display: flex;
     align-items: center;
-}
-
-.avaliation {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    gap: 5px;
+    max-width: 100px;
 }
 
 .estrela {
-    font-size: 25px;
+    font-size: 2.0rem;
     color: #ffe500;
+}
+
+.vote {
+    font-size: 1.5rem;
+    font-weight: 500;
 }
 
 .container-about-movies {
@@ -144,6 +157,7 @@ body {
     border-radius: 10px;
     width: 300px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.432);
+    background: var(--color-button);
 }
 
 .iframe-container {
@@ -181,6 +195,7 @@ body {
     cursor: pointer;
 }
 
+/* tela de celular */
 @media screen and (max-width: 600px) {
     .swiper-slide img {
         display: block;
