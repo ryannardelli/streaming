@@ -191,16 +191,63 @@ body {
     font-size: 13px;
 }
 
-.btn-watch-trailer {
-    margin: 1rem 0;
-    padding: 10px;
-    font-size: 20px;
-    font-weight: bold;
+.icon_of_btn {
+    height: 34px;
+    width: 34px;
+    color: red;
+}
+
+.btn-watch {
+    font-size: 34px;
+    font-weight: bolder;
+    display: inline-block;
+    color: red;
+    border: red 8px solid;
+    border-radius: 16px;
+    box-shadow: inset 0 0 32px 0 red, 0 0 32px 0 red;
+    text-shadow: 0 0 8px hsl(0 0% 100% / 0.3), 0 0 32px;
+    position: relative;
     cursor: pointer;
-    border-radius: 10px;
-    width: 300px;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.432);
-    background: var(--color-button);
+    background: transparent;
+    padding-inline: 10px;
+    margin: 1rem 0;
+}
+
+.btn-watch::before {
+    content: "";
+    position: absolute;
+    top: 120%;
+    left: 0%;
+    background: red;
+    width: 100%;
+    height: 100%;
+    transform: perspective(64px) rotateX(40deg) scale(1, 0.35);
+    filter: blur(64px);
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.btn-watch::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0 0 128px 32px red;
+    opacity: 0;
+    background-color: red;
+    z-index: -1;
+    transition: opacity 100ms linear;
+}
+
+.btn-watch:hover::before, .btn-watch:hover::after {
+    opacity: 1;
+}
+
+.btn-watch:hover {
+    /* color: #31202b; */
+    text-shadow: none;
 }
 
 .iframe-container {
