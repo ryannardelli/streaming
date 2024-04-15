@@ -22,9 +22,6 @@ body {
     min-height: 100vh;
     background: var(--color-background);
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    margin: 0;
-    padding: 0;
 }
 
 .container {
@@ -50,7 +47,6 @@ body {
    position: absolute;
    background: transparent;
    color: #fff;
-   border-radius: 10px;
 }
 
 .container_overview_movie {
