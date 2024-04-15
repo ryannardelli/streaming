@@ -13,6 +13,7 @@ const url_youtube = 'https://www.youtube.com/embed/';
 const genre_one = document.querySelector('.genre_one');
 const genre_two = document.querySelector('.genre_two');
 const poster_img = document.querySelector('.poster_img');
+const logo = document.querySelector('.logo_img');
 
 
 
@@ -157,14 +158,24 @@ async function getResponseApi() {
         const response = await fetch(`https://api.themoviedb.org/3/movie/
         1011985?api_key=${apiKey}&language=pt-BR`);
         const data_api = await response.json();
-        console.log(data_api);
+
+        const url_logo = data_api.production_companies[0].logo_path;
+        const name_alt_logo = data_api.production_companies[0].name;
 
         const response_config = await fetch('https://api.themoviedb.org/3/configuration');
         const data_config = await response_config.json();
+
+        const size_logo = data_config.images.logo_sizes[2];
+
+        
         const size_img = data_config.images.backdrop_sizes[3];
         const base_url = data_config.images.base_url;
         const url_img = data_api.belongs_to_collection.backdrop_path;
-    
+
+        // insere url da logo e texto alternativo
+        logo.src = base_url + size_logo + url_logo;
+        logo.alt = name_alt_logo;
+
         // insere url do background
         const url_of_img_background = base_url + size_img + url_img;
 
