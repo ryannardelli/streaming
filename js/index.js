@@ -154,15 +154,36 @@ async function getResponseApi() {
         const data_api = await response.json();
         console.log(data_api.genres);
         
-        // falta resolver a questão dos numeros gerarem iguais
-        const generate_number_one = Math.floor(Math.random() * data_api.genres.length - 1) + 1;
-        const generate_number_two = Math.floor(Math.random() * data_api.genres.length - 1) + 1;
+        // const generate_number_one = Math.floor(Math.random() * data_api.genres.length - 1) + 1;
+        // const generate_number_two = Math.floor(Math.random() * data_api.genres.length - 1) + 1;
+        // console.log(generate_number_one);
+        // console.log(generate_number_two);
 
-        console.log(generate_number_one);
-        console.log(generate_number_two);
+        
+        let generatedNumbers = [];
+        
+        function generateUniqueNumber() {
+            let randomNumber;
+            do {
+                randomNumber = Math.floor(Math.random() * data_api.genres.length);
+            } while (generatedNumbers.includes(randomNumber));
 
-        genre_one.innerHTML = data_api.genres[generate_number_one].name;
-        genre_two.innerHTML = data_api.genres[generate_number_two].name;
+            generatedNumbers.push(randomNumber);
+            return randomNumber;
+        }
+
+        const generate_number_one = generateUniqueNumber();
+        const generate_number_two = generateUniqueNumber();
+
+        console.log(generateUniqueNumber());
+
+         genre_one.innerHTML = data_api.genres[generate_number_one].name;
+         genre_two.innerHTML = data_api.genres[generate_number_two].name;
+
+        
+
+        // genre_one.innerHTML = data_api.genres[generate_number_one].name;
+        // genre_two.innerHTML = data_api.genres[generate_number_two].name;
 
     } catch(error) {
         console.log(error);
