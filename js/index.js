@@ -9,6 +9,8 @@ const title_of_movie = document.querySelector('.title_movie');
 const date_movie = document.querySelector('.date_movie');
 const vote = document.querySelector('.vote');
 const url_youtube = 'https://www.youtube.com/embed/';
+const genre_one = document.querySelector('.genre_one');
+const genre_two = document.querySelector('.genre_two');
 
 function createImg() {
     const img = document.createElement('img');
@@ -129,7 +131,7 @@ async function getResponseApi() {
 
     // filmes nos cinemas agora
     try {
-        const response_api = await fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=pt-BR', options);
+        const response_api = await fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=pt-BR`, options);
         const data_api = await response_api.json();
     } catch(error) {
         console.log(error);
@@ -148,9 +150,20 @@ async function getResponseApi() {
 
     try {
         const response = await fetch(`https://api.themoviedb.org/3/movie/
-        1011985?api_key=${apiKey}`);
+        1011985?api_key=${apiKey}&language=pt-BR`);
         const data_api = await response.json();
-        console.log(data_api);
+        console.log(data_api.genres);
+        
+        // falta resolver a questão dos numeros gerarem iguais
+        const generate_number_one = Math.floor(Math.random() * data_api.genres.length - 1) + 1;
+        const generate_number_two = Math.floor(Math.random() * data_api.genres.length - 1) + 1;
+
+        console.log(generate_number_one);
+        console.log(generate_number_two);
+
+        genre_one.innerHTML = data_api.genres[generate_number_one].name;
+        genre_two.innerHTML = data_api.genres[generate_number_two].name;
+
     } catch(error) {
         console.log(error);
     }
