@@ -12,6 +12,7 @@ const vote = document.querySelector('.vote');
 const url_youtube = 'https://www.youtube.com/embed/';
 const genre_one = document.querySelector('.genre_one');
 const genre_two = document.querySelector('.genre_two');
+const poster_img = document.querySelector('.poster_img');
 
 
 
@@ -156,17 +157,23 @@ async function getResponseApi() {
         const response = await fetch(`https://api.themoviedb.org/3/movie/
         1011985?api_key=${apiKey}&language=pt-BR`);
         const data_api = await response.json();
+        console.log(data_api);
 
         const response_config = await fetch('https://api.themoviedb.org/3/configuration');
         const data_config = await response_config.json();
-
         const size_img = data_config.images.backdrop_sizes[3];
         const base_url = data_config.images.base_url;
         const url_img = data_api.belongs_to_collection.backdrop_path;
+    
+        // insere url do background
         const url_of_img_background = base_url + size_img + url_img;
 
         container.style.backgroundImage = `url('${url_of_img_background}')`;
-        
+       
+        // insere url e texto alternativo do poster inicial
+        poster_img.src = base_url + data_config.images.poster_sizes[5] + data_api.poster_path;
+        poster_img.alt = data_api.title;
+   
         let generatedNumbers = [];
         
         function generateUniqueNumber() {
@@ -184,7 +191,6 @@ async function getResponseApi() {
 
          genre_one.innerHTML = data_api.genres[generate_number_one].name;
          genre_two.innerHTML = data_api.genres[generate_number_two].name;
-
 
     } catch(error) {
         console.log(error);
