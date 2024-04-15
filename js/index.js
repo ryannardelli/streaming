@@ -1,3 +1,4 @@
+const container = document.querySelector('.container');
 const apiKey = 'df475aedfe842e898fa3da1591fa3f01';
 const iframe_video = document.querySelector('.iframe-video');
 const btn_watch_trailer = document.querySelector('.btn-watch-trailer');
@@ -11,6 +12,10 @@ const vote = document.querySelector('.vote');
 const url_youtube = 'https://www.youtube.com/embed/';
 const genre_one = document.querySelector('.genre_one');
 const genre_two = document.querySelector('.genre_two');
+
+
+
+// container.style.backgroundImage = "url('http://image.tmdb.org/t/p/w780/aNK6MA5EApIo0UJE7ZWSYcZBJKy.jpg')";
 
 function createImg() {
     const img = document.createElement('img');
@@ -95,7 +100,6 @@ async function getResponseApi() {
         const data_configuration = await response.json();
         size = data_configuration.images.poster_sizes[6]; // tamanho original
         base_url = data_configuration.images.base_url;
-        console.log(data_configuration);
     } catch(error) {
         console.log(error);
     }
@@ -152,13 +156,16 @@ async function getResponseApi() {
         const response = await fetch(`https://api.themoviedb.org/3/movie/
         1011985?api_key=${apiKey}&language=pt-BR`);
         const data_api = await response.json();
-        console.log(data_api.genres);
-        
-        // const generate_number_one = Math.floor(Math.random() * data_api.genres.length - 1) + 1;
-        // const generate_number_two = Math.floor(Math.random() * data_api.genres.length - 1) + 1;
-        // console.log(generate_number_one);
-        // console.log(generate_number_two);
 
+        const response_config = await fetch('https://api.themoviedb.org/3/configuration');
+        const data_config = await response_config.json();
+
+        const size_img = data_config.images.backdrop_sizes[3];
+        const base_url = data_config.images.base_url;
+        const url_img = data_api.belongs_to_collection.backdrop_path;
+        const url_of_img_background = base_url + size_img + url_img;
+
+        container.style.backgroundImage = `url('${url_of_img_background}')`;
         
         let generatedNumbers = [];
         
@@ -175,15 +182,9 @@ async function getResponseApi() {
         const generate_number_one = generateUniqueNumber();
         const generate_number_two = generateUniqueNumber();
 
-        console.log(generateUniqueNumber());
-
          genre_one.innerHTML = data_api.genres[generate_number_one].name;
          genre_two.innerHTML = data_api.genres[generate_number_two].name;
 
-        
-
-        // genre_one.innerHTML = data_api.genres[generate_number_one].name;
-        // genre_two.innerHTML = data_api.genres[generate_number_two].name;
 
     } catch(error) {
         console.log(error);
@@ -199,5 +200,4 @@ btn_watch_trailer.addEventListener('click', () => {
 
 close_button.addEventListener('click', () => {
     container_iframe.style.display = 'none';
-    iframe_container.style.display = 'none';
 });
