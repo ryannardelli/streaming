@@ -1,4 +1,5 @@
-const container = document.querySelector('.container');
+const container_movie = document.querySelector('.container_movie');
+const container_serie = document.querySelector('.container_serie');
 const apiKey = 'df475aedfe842e898fa3da1591fa3f01';
 const iframe_video = document.querySelector('.iframe-video');
 const btn_watch_trailer = document.querySelector('.btn-watch');
@@ -14,10 +15,8 @@ const genre_one = document.querySelector('.genre_one');
 const genre_two = document.querySelector('.genre_two');
 const poster_img = document.querySelector('.poster_img');
 const logo = document.querySelector('.logo_img');
-
-
-
-// container.style.backgroundImage = "url('http://image.tmdb.org/t/p/w780/aNK6MA5EApIo0UJE7ZWSYcZBJKy.jpg')";
+const container_about_serie = document.querySelector('.container_about_serie');
+const container_avalation_serie = document.querySelector('.avaliation_serie');
 
 function createImg() {
     const img = document.createElement('img');
@@ -27,6 +26,16 @@ function createImg() {
 function createDiv() {
     const div = document.createElement('div');
     return div;
+};
+
+function createH1() {
+    const h1 = document.createElement('h1');
+    return h1;
+};
+
+function createParagraph() {
+    const p = document.createElement('p');
+    return p;
 };
 
 function insertDivWithContent(src_img) {
@@ -53,6 +62,72 @@ function insertIframe(src) {
     iframe_video.appendChild(iframe);
     return iframe_video;
 }
+
+function inserH1_about_serie(title) {
+    const h1 = createH1();
+    h1.innerHTML = title;
+    return h1;
+}
+
+function inserP_about_serie(about_serie) {
+    const p = createParagraph();
+    p.innerHTML = about_serie;;
+    return p;
+}
+
+function insert_estrela_vote(code) {
+    const p = createParagraph();
+    p.innerHTML = code;
+    return p;
+};
+
+function insert_vote_population(vote) {
+    const p = createParagraph(vote);
+    p.innerHTML = vote;
+    return p;
+};
+
+function insert_season_about_serie(season) {
+    const p = createParagraph();
+    p.innerHTML = season;
+    return p;
+};
+
+function insert_episode_about_serie(episode) {
+    const p = createParagraph();
+    p.innerHTML = episode;
+    return p;
+};
+
+function insert_informations_about_serie(code, vote, season, episode) {
+    const div = createDiv();
+    const code_hex = insert_estrela_vote(code);
+    const vote_population = insert_vote_population(vote);
+    const season_serie = insert_season_about_serie(season);
+    const episode_serie = insert_episode_about_serie(episode);
+
+    code_hex.style.color = '#ffe500';
+
+    div.classList.add('info_about_serie');
+
+    div.appendChild(code_hex);
+    div.appendChild(vote_population);
+    div.appendChild(season_serie);
+    div.appendChild(episode_serie);
+    
+    return div;
+};
+
+function insertTitle_and_description_about_serie(title, overview) {
+    const div = createDiv();
+    const title_serie = inserH1_about_serie(title);
+    const overview_serie = inserP_about_serie(overview);
+
+    div.appendChild(title_serie);
+    div.appendChild(overview_serie);
+
+    return div;
+};
 
 const swiper = new Swiper(".mySwiper", {
     slidesPerView: 3,
@@ -176,10 +251,9 @@ async function getResponseApi() {
         logo.src = base_url + size_logo + url_logo;
         logo.alt = name_alt_logo;
 
-        // insere url do background
-        const url_of_img_background = base_url + size_img + url_img;
-
-        container.style.backgroundImage = `url('${url_of_img_background}')`;
+        // insere url do background do filme
+        const url_of_img_background_movie = base_url + size_img + url_img;
+        container_movie.style.backgroundImage = `url('${url_of_img_background_movie}')`;
        
         // insere url e texto alternativo do poster inicial
         poster_img.src = base_url + data_config.images.poster_sizes[5] + data_api.poster_path;
@@ -202,6 +276,35 @@ async function getResponseApi() {
 
          genre_one.innerHTML = data_api.genres[generate_number_one].name;
          genre_two.innerHTML = data_api.genres[generate_number_two].name;
+
+    } catch(error) {
+        console.log(error);
+    }
+
+    try {
+        const response_api_serie = await fetch(`https://api.themoviedb.org/3/tv/top_rated?api_key=${apiKey}&language=pt-BR`, options);
+        const data_api_serie = await response_api_serie.json();
+
+        const response_api_config = await fetch('https://api.themoviedb.org/3/configuration');
+        const data_response_config = await response_api_config.json();
+
+        const url_image_serie = data_response_config.images.base_url + data_response_config.images.backdrop_sizes[3] + data_api_serie.results[1].backdrop_path;
+
+        // insere url no background da imagem da série
+        container_serie.style.backgroundImage = `url('${url_image_serie}')`;
+
+        // console.log(data_api_serie.results[1]);
+    } catch(error) {
+        console.log(error);
+    }
+
+    try {
+        // 1396
+        const response_to_id = await fetch(`https://api.themoviedb.org/3/tv/1396?api_key=${apiKey}&language=pt-BR`);
+        const data_to_api_id = await response_to_id.json();
+        
+        container_about_serie.appendChild(insertTitle_and_description_about_serie(data_to_api_id.original_name, data_to_api_id.overview));
+        container_avalation_serie.appendChild(insert_informations_about_serie('&#9733', `${data_to_api_id.vote_average.toFixed(1).replace(/\./g, ',')} |`, `Temporadas ${data_to_api_id.number_of_seasons} |`, `Episódios ${data_to_api_id.number_of_episodes}`));
 
     } catch(error) {
         console.log(error);
