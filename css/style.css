@@ -132,8 +132,8 @@ body {
 .container-about-movies {
     display: flex;
     align-items: center;
-    padding: 1.5rem 0.5rem;
-    gap: 10px;
+    padding-top: 1.3rem;
+    gap: 5px;
     margin-inline: 10px;
 }
 
@@ -214,12 +214,6 @@ body {
     color: red;
 }
 
-/* p {
-    font-weight: 300;
-    font-size: 1rem;
-    text-shadow: 1px 1px 2px #000;
-} */
-
 .swiper-slide {
     text-align: center;
     font-size: 18px;
@@ -227,6 +221,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 1.5rem;
 }
 
 .swiper-slide img {
