@@ -359,8 +359,15 @@ body {
         justify-content: center;
     }
 
-    .overview-about-movie {
-        font-size: 1.0rem;
+    .container_serie {
+        display: flex;
+        align-items: center;
+        height: auto;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        padding-inline: 30px;
     }
 }
 
@@ -371,6 +378,6 @@ body {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         height: auto;
-        width: auto;
+        width: 100%;
     }
 }
