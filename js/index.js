@@ -321,3 +321,12 @@ btn_watch_trailer.addEventListener('click', () => {
 close_button.addEventListener('click', () => {
     container_iframe.style.display = 'none';
 });
+
+// script do sidebar
+
+const btn_open = document.querySelector('.btn-open');
+const sidebar = document.querySelector('.sidebar');
+
+btn_open.addEventListener('click', () => {
+    sidebar.classList.toggle('open-sidebar');
+});
