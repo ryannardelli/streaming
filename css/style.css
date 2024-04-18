@@ -267,6 +267,7 @@ body {
     display: flex;
     min-height: 100vh;
     background: #e3e9f7;
+    /* background: black; */
 }
 
 .items {
@@ -277,12 +278,13 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: #fff;
+    background: #0a0a0a;
     height: 100vh;
     /* border-radius: 0px 18px 18px 0px; */
     position: relative;
     transition: all .5s;
     min-width: 82px;
+    box-shadow: 3px 0 0 #FF0077;
 }
 
 .sidebar_content {
@@ -324,7 +326,7 @@ body {
 }
 
 .side-item:hover:not(.active), .btn-toggle:hover {
-    background: #e3e9f7;
+    background: #FF0077;
 }
 
 .side-item a {
@@ -461,7 +463,7 @@ body {
 }
 
 #input_checkbox:checked::before {
-    left: 30px;
+    left: 25px;
 }
 
 .container_serie {
