@@ -347,12 +347,7 @@ body {
     height: 20px;
 }
 
-.toggle {
-    border-top: 1px solid #e3e9f7;
-    padding: 12px;
-}
-
-.btn-toggle {
+/* .btn-toggle {
     border: none;
     padding: 12px;
     font-size: 14px;
@@ -363,7 +358,7 @@ body {
     text-align: start;
     cursor: pointer;
     background: transparent;
-}
+} */
 
 .btn-open {
     position: absolute;
@@ -419,6 +414,54 @@ body {
 .sidebar.open-sidebar .side-item a {
     justify-content: flex-start;
     gap: 14px;
+}
+
+
+.toggle {
+    border-top: 1px solid #e3e9f7;
+    padding: 12px;
+}
+
+#input_checkbox {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    text-align: start;
+    cursor: pointer;
+    width: 50px;
+    height: 25px;
+    appearance: none;
+    background: #DAE2DF;
+    border-radius: 50px;
+    /* box-shadow: inset 0px 0px 16px 1px rgba(0, 0, 0, 0.24); */
+    box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.24);
+    transition: .4s;
+    position: relative;
+}
+
+#input_checkbox:checked {
+    background: #3DECB1;
+}
+
+#input_checkbox::before {
+    content: "";
+    /* width: 21px;
+    height: 20px; */
+    width: 25px;
+    height: 25px;
+    color: #EDF3F1;
+    /* font-weight: bolder; */
+    border-radius: 50px;
+    position: absolute;
+    box-shadow: 0px 4px 8px 1px rgba(0, 0, 0, 0.25);
+    transform: scale(1.1);
+    top: 0;
+    left: 0;
+    transition: .4s;
+}
+
+#input_checkbox:checked::before {
+    left: 30px;
 }
 
 .container_serie {
@@ -486,7 +529,7 @@ body {
 
 /* tela de celular */
 @media (min-width: 320px) and (max-width: 600px) {
-    
+
     .swiper-slide img {
         display: block;
         width: 100%;
