@@ -161,6 +161,10 @@ body {
     white-space: nowrap;
 }
 
+.btns {
+    display: flex;
+    gap: 30px;
+}
 
 .btn-watch {
     font-size: 34px;
@@ -214,6 +218,10 @@ body {
     /* color: #31202b; */
     text-shadow: none;
 }
+
+/* #btn-watch-trailer {
+    display: none;
+} */
 
 .icon_of_btn {
     height: 34px;

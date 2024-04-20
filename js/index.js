@@ -2,7 +2,7 @@ const container_movie = document.querySelector('.container_movie');
 const container_serie = document.querySelector('.container_serie');
 const apiKey = 'df475aedfe842e898fa3da1591fa3f01';
 const iframe_video = document.querySelector('.iframe-video');
-const btn_watch_trailer = document.querySelector('.btn-watch');
+const btn_watch_trailer = document.querySelector('#btn-watch-trailer');
 const container_iframe = document.querySelector('.iframe-container');
 const close_button = document.querySelector('.btn-close');
 const swiper_wrapper = document.querySelector('.swiper-wrapper');
@@ -236,14 +236,6 @@ async function getResponseApi() {
         console.log(error);
     }
 
-    // kung fu panda 4
-    // console.log(about_movie);
-    // title_of_movie.innerHTML = about_movie[1].title;
-    // date_movie.innerHTML = about_movie[1].release_date.slice(0, 4);
-    // p_overview_about_movie.innerHTML = about_movie[1].overview;
-    // const vote_public = about_movie[1].vote_average;
-    // vote.innerHTML = vote_public.toFixed(1).replace(/\./g, ',');
-
     // filmes nos cinemas agora
     try {
         const response_api = await fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=pt-BR`, options);
@@ -253,30 +245,29 @@ async function getResponseApi() {
     }
 
     // consulta do video do filme por id
-    try {
-        const response = await fetch(`https://api.themoviedb.org/3/movie/
-        1011985/videos?api_key=${apiKey}`, options);
-        const data_api = await response.json();
-        const api_with_video = data_api.results.map(item => item);
-        insertIframe(url_youtube + api_with_video[4].key);
-    } catch(error) {
-        console.log(error);
-    }
+    // try {
+    //     const response = await fetch(`https://api.themoviedb.org/3/movie/
+    //     1011985/videos?api_key=${apiKey}`, options);
+    //     const data_api = await response.json();
+    //     const api_with_video = data_api.results.map(item => item);
+    //     // insertIframe(url_youtube + api_with_video[4].key);
+    // } catch(error) {
+    //     console.log(error);
+    // }
 
     // consulta dos filmes populares com seus ids
     try {
         let ids = [];
         let movies = [];
+        let videos = [];
+        let itens_videos = [];
+        let trailers = [];
 
         const response_config = await fetch('https://api.themoviedb.org/3/configuration');
         const data_config = await response_config.json();
-        console.log(data_config);
 
         const base_url = data_config.images.base_url;
         const size_img_background = data_config.images.backdrop_sizes[3];
-
-        console.log(base_url);
-        console.log(size_img_background);
 
         const response_id = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR`);
 
@@ -290,8 +281,26 @@ async function getResponseApi() {
             const response_description = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=pt-BR`);
             const data_description = await response_description.json();
             movies.push(data_description);
-        };
+        }
 
+        for(let id of ids) {
+            const response = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}&language=pt-BR`);
+            const data = await response.json();
+            videos.push(data);
+        }
+
+        videos.forEach(item => {
+            itens_videos.push(item);
+        });
+
+        for(let i = 0; i < itens_videos.length; i++) {
+            for(let result of itens_videos[i].results) {
+                if(result.name.toLowerCase().includes('trailer')) {
+                    trailers.push(result);
+                }            
+            }
+        }
+        
         const filter_movies = movies.filter(item => {
             return item.overview && item.title && item.vote_average && item.poster_path;
         });
@@ -307,12 +316,7 @@ async function getResponseApi() {
         const genre_one_movie = filter_movies[generate_index_of_movie].genres[0].name;
         const genre_two_movie = filter_movies[generate_index_of_movie].genres[1].name;
 
-        console.log(genre_one);
-        console.log(genre_two);
-
-        console.log(url_poster);
-        
-        console.log(poster_size);
+        // console.log(filter_movies);
 
         url_of_img_background_movie = base_url + size_img_background + url_background;
 
