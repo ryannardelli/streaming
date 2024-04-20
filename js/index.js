@@ -6,8 +6,8 @@ const btn_watch_trailer = document.querySelector('.btn-watch');
 const container_iframe = document.querySelector('.iframe-container');
 const close_button = document.querySelector('.btn-close');
 const swiper_wrapper = document.querySelector('.swiper-wrapper');
-const p_overview_about_movie = document.querySelector('.overview-about-movie');
 const title_of_movie = document.querySelector('.title_movie');
+const p_overview_about_movie = document.querySelector('.overview-about-movie');
 const date_movie = document.querySelector('.date_movie');
 const vote = document.querySelector('.vote');
 const url_youtube = 'https://www.youtube.com/embed/';
@@ -237,12 +237,12 @@ async function getResponseApi() {
     }
 
     // kung fu panda 4
-    console.log(about_movie);
-    title_of_movie.innerHTML = about_movie[1].title;
-    date_movie.innerHTML = about_movie[1].release_date.slice(0, 4);
-    p_overview_about_movie.innerHTML = about_movie[1].overview;
-    const vote_public = about_movie[1].vote_average;
-    vote.innerHTML = vote_public.toFixed(1).replace(/\./g, ',');
+    // console.log(about_movie);
+    // title_of_movie.innerHTML = about_movie[1].title;
+    // date_movie.innerHTML = about_movie[1].release_date.slice(0, 4);
+    // p_overview_about_movie.innerHTML = about_movie[1].overview;
+    // const vote_public = about_movie[1].vote_average;
+    // vote.innerHTML = vote_public.toFixed(1).replace(/\./g, ',');
 
     // filmes nos cinemas agora
     try {
@@ -263,57 +263,135 @@ async function getResponseApi() {
         console.log(error);
     }
 
+    // consulta dos filmes populares com seus ids
     try {
-        const response = await fetch(`https://api.themoviedb.org/3/movie/
-        1011985?api_key=${apiKey}&language=pt-BR`);
-        const data_api = await response.json();
-
-        const url_logo = data_api.production_companies[0].logo_path;
-        const name_alt_logo = data_api.production_companies[0].name;
+        let ids = [];
+        let movies = [];
 
         const response_config = await fetch('https://api.themoviedb.org/3/configuration');
         const data_config = await response_config.json();
+        console.log(data_config);
 
-        const size_logo = data_config.images.logo_sizes[2];
-
-        
-        const size_img = data_config.images.backdrop_sizes[3];
         const base_url = data_config.images.base_url;
-        const url_img = data_api.belongs_to_collection.backdrop_path;
+        const size_img_background = data_config.images.backdrop_sizes[3];
 
-        // insere url da logo e texto alternativo
-        logo.src = base_url + size_logo + url_logo;
-        logo.alt = name_alt_logo;
+        console.log(base_url);
+        console.log(size_img_background);
 
-        // insere url do background do filme
-        const url_of_img_background_movie = base_url + size_img + url_img;
-        container_movie.style.backgroundImage = `url('${url_of_img_background_movie}')`;
-       
-        // insere url e texto alternativo do poster inicial
-        poster_img.src = base_url + data_config.images.poster_sizes[5] + data_api.poster_path;
-        poster_img.alt = data_api.title;
-   
-        let generatedNumbers = [];
+        const response_id = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR`);
+
+        const data_api_id = await response_id.json();
+
+        data_api_id.results.filter(item => {
+            ids.push(item.id);
+        });
+
+        for (let id of ids) {
+            const response_description = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=pt-BR`);
+            const data_description = await response_description.json();
+            movies.push(data_description);
+        };
+
+        const filter_movies = movies.filter(item => {
+            return item.overview && item.title && item.vote_average && item.poster_path;
+        });
+
+        const generate_index_of_movie = Math.floor(Math.random() * filter_movies.length);
+        const url_background = filter_movies[generate_index_of_movie].backdrop_path;
+        const title_movie = filter_movies[generate_index_of_movie].title;
+        const overview_movie = filter_movies[generate_index_of_movie].overview;
+        const poster_size = data_config.images.poster_sizes[4];
+        const url_poster = filter_movies[generate_index_of_movie].poster_path;
+        const date = filter_movies[generate_index_of_movie].release_date.slice(0, 4);
+        const vote_population = filter_movies[generate_index_of_movie].vote_average.toFixed(1).replace(/\./g, ',');
+        const genre_one_movie = filter_movies[generate_index_of_movie].genres[0].name;
+        const genre_two_movie = filter_movies[generate_index_of_movie].genres[1].name;
+
+        console.log(genre_one);
+        console.log(genre_two);
+
+        console.log(url_poster);
         
-        function generateUniqueNumber() {
-            let randomNumber;
-            do {
-                randomNumber = Math.floor(Math.random() * data_api.genres.length);
-            } while (generatedNumbers.includes(randomNumber));
+        console.log(poster_size);
 
-            generatedNumbers.push(randomNumber);
-            return randomNumber;
-        }
+        url_of_img_background_movie = base_url + size_img_background + url_background;
 
-        const generate_number_one = generateUniqueNumber();
-        const generate_number_two = generateUniqueNumber();
+        // insere imagem no background da sessão filme
+        container_movie.style.backgroundImage = `url('${url_of_img_background_movie}')`;
 
-         genre_one.innerHTML = data_api.genres[generate_number_one].name;
-         genre_two.innerHTML = data_api.genres[generate_number_two].name;
+        // insere titulo e overview do filme
+        title_of_movie.innerHTML = title_movie;
+        p_overview_about_movie.innerHTML = overview_movie;
+
+        // insere o poster do filme e o texto alternativo
+        poster_img.src = base_url + poster_size + url_poster;
+        poster_img.alt = title_movie;
+
+        // insere data do filme
+        date_movie.innerHTML = date;
+
+        // insere classificação do filme
+        vote.innerHTML = vote_population;
+
+        // insere gêneros do filme
+        genre_one.innerHTML = genre_one_movie;
+        genre_two.innerHTML = genre_two_movie;
 
     } catch(error) {
         console.log(error);
     }
+
+    // try {
+    //     const response = await fetch(`https://api.themoviedb.org/3/movie/
+    //     1011985?api_key=${apiKey}&language=pt-BR`);
+    //     const data_api = await response.json();
+
+    //     const url_logo = data_api.production_companies[0].logo_path;
+    //     const name_alt_logo = data_api.production_companies[0].name;
+
+    //     const response_config = await fetch('https://api.themoviedb.org/3/configuration');
+    //     const data_config = await response_config.json();
+
+    //     const size_logo = data_config.images.logo_sizes[2];
+
+        
+    //     const size_img = data_config.images.backdrop_sizes[3];
+    //     const base_url = data_config.images.base_url;
+    //     const url_img = data_api.belongs_to_collection.backdrop_path;
+
+    //     // insere url da logo e texto alternativo
+    //     logo.src = base_url + size_logo + url_logo;
+    //     logo.alt = name_alt_logo;
+
+    //     // insere url do background do filme
+    //     const url_of_img_background_movie = base_url + size_img + url_img;
+    //     container_movie.style.backgroundImage = `url('${url_of_img_background_movie}')`;
+       
+    //     // insere url e texto alternativo do poster inicial
+    //     poster_img.src = base_url + data_config.images.poster_sizes[5] + data_api.poster_path;
+    //     poster_img.alt = data_api.title;
+   
+    //     let generatedNumbers = [];
+        
+    //     function generateUniqueNumber() {
+    //         let randomNumber;
+    //         do {
+    //             randomNumber = Math.floor(Math.random() * data_api.genres.length);
+    //         } while (generatedNumbers.includes(randomNumber));
+
+    //         generatedNumbers.push(randomNumber);
+    //         return randomNumber;
+    //     }
+
+    //     const generate_number_one = generateUniqueNumber();
+    //     const generate_number_two = generateUniqueNumber();
+
+    //      genre_one.innerHTML = data_api.genres[generate_number_one].name;
+    //      genre_two.innerHTML = data_api.genres[generate_number_two].name;
+
+    // } catch(error) {
+    //     console.log(error);
+    // }
 
     try {
         const response_api_serie = await fetch(`https://api.themoviedb.org/3/tv/top_rated?api_key=${apiKey}&language=pt-BR`, options);
@@ -349,12 +427,6 @@ async function getResponseApi() {
 
         const response_api_config = await fetch('https://api.themoviedb.org/3/configuration');
         const data_response_config = await response_api_config.json();
-
-        console.log(data_response_config.images.base_url);
-        console.log(data_response_config);
-
-        console.log(data_response_config);
-
 
         let movies = [];
         let src_imgs = [];
