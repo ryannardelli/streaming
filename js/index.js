@@ -17,6 +17,7 @@ const poster_img = document.querySelector('.poster_img');
 const logo = document.querySelector('.logo_img');
 const container_about_serie = document.querySelector('.container_about_serie');
 const container_avalation_serie = document.querySelector('.avaliation_serie');
+const section_movies_description = document.querySelector('.container-movies-description');
 
 function createImg() {
     const img = document.createElement('img');
@@ -129,6 +130,40 @@ function insertTitle_and_description_about_serie(title, overview) {
     return div;
 };
 
+function insert_img_about_movie(url) {
+    const img = createImg();
+    img.src = url;
+    return img;
+};
+
+function insert_title_movie(title_movie) {
+    const h1 = createH1();
+    h1.innerHTML = title_movie;
+    return h1;
+
+};
+
+function insert_date_movie(date_movie) {
+    const p = createParagraph();
+    p.innerHTML = date_movie;
+    return p;
+};
+
+function insert_posters_movies(url_img, title, date) {
+    const div = createDiv();
+    const img_movie = insert_img_about_movie(url_img);
+    const title_movie = insert_title_movie(title);
+    const date_movie = insert_date_movie(date);
+
+    title_movie.classList.add('title_of_movie');
+
+    div.appendChild(img_movie);
+    div.appendChild(title_movie);
+    div.appendChild(date_movie);
+
+    return div;
+};
+
 const swiper = new Swiper(".mySwiper", {
     slidesPerView: 3,
     centeredSlides: true,
@@ -202,13 +237,12 @@ async function getResponseApi() {
     }
 
     // kung fu panda 4
+    console.log(about_movie);
     title_of_movie.innerHTML = about_movie[1].title;
     date_movie.innerHTML = about_movie[1].release_date.slice(0, 4);
     p_overview_about_movie.innerHTML = about_movie[1].overview;
     const vote_public = about_movie[1].vote_average;
     vote.innerHTML = vote_public.toFixed(1).replace(/\./g, ',');
-
-    // console.log(about_movie[1]);
 
     // filmes nos cinemas agora
     try {
@@ -299,12 +333,62 @@ async function getResponseApi() {
     }
 
     try {
-        // 1396
         const response_to_id = await fetch(`https://api.themoviedb.org/3/tv/1396?api_key=${apiKey}&language=pt-BR`);
         const data_to_api_id = await response_to_id.json();
         
         container_about_serie.appendChild(insertTitle_and_description_about_serie(data_to_api_id.original_name, data_to_api_id.overview));
         container_avalation_serie.appendChild(insert_informations_about_serie('&#9733', `${data_to_api_id.vote_average.toFixed(1).replace(/\./g, ',')} |`, `Temporadas ${data_to_api_id.number_of_seasons} |`, `Episódios ${data_to_api_id.number_of_episodes}`));
+
+    } catch(error) {
+        console.log(error);
+    }
+
+    try {
+        const response_movies = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=pt-BR`)
+        const data_movies = await response_movies.json();
+
+        const response_api_config = await fetch('https://api.themoviedb.org/3/configuration');
+        const data_response_config = await response_api_config.json();
+
+        console.log(data_response_config.images.base_url);
+        console.log(data_response_config);
+
+        console.log(data_response_config);
+
+
+        let movies = [];
+        let src_imgs = [];
+        let element_movies = [];
+        let title_movies = [];
+        let date_movies_year = [];
+
+        movies.push(data_movies.results);
+        movies.forEach(movies => {
+            for(let movie of movies) {
+                element_movies.push(movie);
+            }
+        });
+
+        element_movies.filter((item => {
+            src_imgs.push(data_response_config.images.base_url + data_response_config.images.poster_sizes[2] + item.poster_path);
+        }));
+
+
+        element_movies.filter((item => {
+            title_movies.push(item.title);
+        }));
+
+        element_movies.filter((item => {
+            date_movies_year.push(item.release_date.slice(0, 4));
+        }));
+
+        // insere imagem, titulo, data dos filmes
+        element_movies.forEach((element, index) => {
+            const src = src_imgs[index];
+            const title = title_movies[index];
+            const date_year = date_movies_year[index];
+            section_movies_description.appendChild(insert_posters_movies(src, title, date_year));
+        })
 
     } catch(error) {
         console.log(error);

@@ -15,7 +15,6 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
-    color: var(--color-font);
     font-family: "Poppins", sans-serif;
 }
 
@@ -146,14 +145,20 @@ body {
     margin-bottom: 1rem;
 }
 
+.container-about-movies {
+    color: var(--color-font);
+}
+
 .container-about-movies h1 {
     font-size: 1.8rem;
+    white-space: nowrap;
 }
 
 .container-about-movies h2 {
     font-size: 1.5rem;
     font-weight: bolder;
     padding: 1.8rem 0.5rem;
+    white-space: nowrap;
 }
 
 
@@ -267,11 +272,6 @@ body {
     display: flex;
     min-height: 100vh;
     background: #e3e9f7;
-    /* background: black; */
-}
-
-.items {
-    padding: 20px;
 }
 
 .sidebar {
@@ -334,7 +334,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #0a0a0a;
+    color: var(--color-font);
 }
 
 .side-item.active a {
@@ -347,6 +347,7 @@ body {
     justify-content: center;
     width: 20px;
     height: 20px;
+    color: var(--color-font);
 }
 
 /* .btn-toggle {
@@ -466,6 +467,28 @@ body {
     left: 25px;
 }
 
+.container-items {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    height: 100vh;
+}
+
+.container-movies-description {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 30px;
+    max-width: calc(100vw - 150px);
+    max-height: 80vh;
+    overflow: auto;
+}
+
+.title_of_movie {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .container_serie {
     display: flex;
     align-items: center;
@@ -475,6 +498,7 @@ body {
     background-size: cover;
     background-position: center;
     padding-inline: 30px;
+    color: var(--color-font);
 }
 
 .container_serie h1 {
@@ -482,6 +506,7 @@ body {
     margin-bottom: 0.8rem;
     font-weight: bolder;
     text-shadow: 1px 1px 2px #000;
+    white-space: nowrap;
 }
 
 .container_serie p {
@@ -503,6 +528,7 @@ body {
     gap: 10px;
     text-shadow: 1px 1px 2px #000;
     font-size: 1.5rem;
+    white-space: nowrap;
 }
 
 .iframe-container {
