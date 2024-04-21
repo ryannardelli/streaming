@@ -417,8 +417,18 @@ async function getResponseApi() {
     }
 
     try {
-        const response_movies = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=pt-BR`)
+        const response_pages = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=pt-BR`);
+        const data_pages = await response_pages.json();
+
+        const total_pages = data_pages.total_pages;
+        const generate_index_page = Math.floor(Math.random() * total_pages);
+
+        console.log(generate_index_page);
+
+        const response_movies = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=pt-BR&page=${generate_index_page}`);
         const data_movies = await response_movies.json();
+
+        console.log(data_movies);
 
         const response_api_config = await fetch('https://api.themoviedb.org/3/configuration');
         const data_response_config = await response_api_config.json();
