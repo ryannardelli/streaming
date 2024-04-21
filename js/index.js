@@ -244,23 +244,9 @@ async function getResponseApi() {
         console.log(error);
     }
 
-    // consulta do video do filme por id
-    // try {
-    //     const response = await fetch(`https://api.themoviedb.org/3/movie/
-    //     1011985/videos?api_key=${apiKey}`, options);
-    //     const data_api = await response.json();
-    //     const api_with_video = data_api.results.map(item => item);
-    //     // insertIframe(url_youtube + api_with_video[4].key);
-    // } catch(error) {
-    //     console.log(error);
-    // }
-
-    // consulta dos filmes populares com seus ids
     try {
         let ids = [];
         let movies = [];
-        let videos = [];
-        let itens_videos = [];
         let trailers = [];
 
         const response_config = await fetch('https://api.themoviedb.org/3/configuration');
@@ -282,24 +268,6 @@ async function getResponseApi() {
             const data_description = await response_description.json();
             movies.push(data_description);
         }
-
-        for(let id of ids) {
-            const response = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}&language=pt-BR`);
-            const data = await response.json();
-            videos.push(data);
-        }
-
-        videos.forEach(item => {
-            itens_videos.push(item);
-        });
-
-        for(let i = 0; i < itens_videos.length; i++) {
-            for(let result of itens_videos[i].results) {
-                if(result.name.toLowerCase().includes('trailer')) {
-                    trailers.push(result);
-                }            
-            }
-        }
         
         const filter_movies = movies.filter(item => {
             return item.overview && item.title && item.vote_average && item.poster_path;
@@ -315,8 +283,45 @@ async function getResponseApi() {
         const vote_population = filter_movies[generate_index_of_movie].vote_average.toFixed(1).replace(/\./g, ',');
         const genre_one_movie = filter_movies[generate_index_of_movie].genres[0].name;
         const genre_two_movie = filter_movies[generate_index_of_movie].genres[1].name;
+        const id_movie = filter_movies[generate_index_of_movie].id;
 
-        // console.log(filter_movies);
+        const response_video = await fetch(`https://api.themoviedb.org/3/movie/${id_movie}/videos?api_key=${apiKey}&language=pt-BR`);
+        const data_video = await response_video.json();
+
+        for(let item of data_video.results) {
+            if(item.type.toLowerCase().includes('trailer')) {
+                trailers.push(item);
+            }
+        }
+
+        function set_url_trailer() {
+            for(let trailer of trailers) {
+    
+                let key;
+    
+                if(trailer.name.toLowerCase().includes('dublado')) {
+                    btn_watch_trailer.style.display = 'block';
+                    key = trailer.key;
+                    insertIframe(url_youtube + key);
+                    return
+                }
+
+                if (trailer.name.toLowerCase().includes('legendado')) {
+                    btn_watch_trailer.style.display = 'block';
+                    key = trailer.key;
+                    insertIframe(url_youtube + key);
+                    return
+                }
+
+                btn_watch_trailer.style.display = 'block';
+                key = trailer.key;
+                insertIframe(url_youtube + key);
+                return;
+    
+            }
+        }
+
+        set_url_trailer();
 
         url_of_img_background_movie = base_url + size_img_background + url_background;
 
@@ -344,58 +349,6 @@ async function getResponseApi() {
     } catch(error) {
         console.log(error);
     }
-
-    // try {
-    //     const response = await fetch(`https://api.themoviedb.org/3/movie/
-    //     1011985?api_key=${apiKey}&language=pt-BR`);
-    //     const data_api = await response.json();
-
-    //     const url_logo = data_api.production_companies[0].logo_path;
-    //     const name_alt_logo = data_api.production_companies[0].name;
-
-    //     const response_config = await fetch('https://api.themoviedb.org/3/configuration');
-    //     const data_config = await response_config.json();
-
-    //     const size_logo = data_config.images.logo_sizes[2];
-
-        
-    //     const size_img = data_config.images.backdrop_sizes[3];
-    //     const base_url = data_config.images.base_url;
-    //     const url_img = data_api.belongs_to_collection.backdrop_path;
-
-    //     // insere url da logo e texto alternativo
-    //     logo.src = base_url + size_logo + url_logo;
-    //     logo.alt = name_alt_logo;
-
-    //     // insere url do background do filme
-    //     const url_of_img_background_movie = base_url + size_img + url_img;
-    //     container_movie.style.backgroundImage = `url('${url_of_img_background_movie}')`;
-       
-    //     // insere url e texto alternativo do poster inicial
-    //     poster_img.src = base_url + data_config.images.poster_sizes[5] + data_api.poster_path;
-    //     poster_img.alt = data_api.title;
-   
-    //     let generatedNumbers = [];
-        
-    //     function generateUniqueNumber() {
-    //         let randomNumber;
-    //         do {
-    //             randomNumber = Math.floor(Math.random() * data_api.genres.length);
-    //         } while (generatedNumbers.includes(randomNumber));
-
-    //         generatedNumbers.push(randomNumber);
-    //         return randomNumber;
-    //     }
-
-    //     const generate_number_one = generateUniqueNumber();
-    //     const generate_number_two = generateUniqueNumber();
-
-    //      genre_one.innerHTML = data_api.genres[generate_number_one].name;
-    //      genre_two.innerHTML = data_api.genres[generate_number_two].name;
-
-    // } catch(error) {
-    //     console.log(error);
-    // }
 
     try {
         const response_api_serie = await fetch(`https://api.themoviedb.org/3/tv/top_rated?api_key=${apiKey}&language=pt-BR`, options);
