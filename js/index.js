@@ -289,11 +289,6 @@ async function getResponseApi() {
         const url_logo = filter_movies[generate_index_of_movie].production_companies[generate_index_for_logo].logo_path;
         const name_companie = filter_movies[generate_index_of_movie].production_companies[generate_index_for_logo].name;
 
-        console.log(generate_index_for_logo);
-        console.log(data_config);
-        
-        console.log(filter_movies[generate_index_of_movie]);
-
         // insere logo e texto alternativo
         logo.src = base_url + logo_size + url_logo;
         logo.alt = name_companie;
@@ -364,16 +359,42 @@ async function getResponseApi() {
     }
 
     try {
-        const response_api_serie = await fetch(`https://api.themoviedb.org/3/tv/top_rated?api_key=${apiKey}&language=pt-BR`, options);
-        const data_api_serie = await response_api_serie.json();
+        const response_pages = await fetch(`https://api.themoviedb.org/3/tv/top_rated?api_key=${apiKey}&language=pt-BR`);
+        const data_page_api = await response_pages.json();
 
         const response_api_config = await fetch('https://api.themoviedb.org/3/configuration');
         const data_response_config = await response_api_config.json();
 
-        const url_image_serie = data_response_config.images.base_url + data_response_config.images.backdrop_sizes[3] + data_api_serie.results[1].backdrop_path;
+        const total_page = data_page_api.total_pages;
+
+        const generate_index_page = Math.floor(Math.random() * total_page);
+
+        const response_api_serie = await fetch(`https://api.themoviedb.org/3/tv/top_rated?api_key=${apiKey}&language=pt-BR&page=${generate_index_page}`, options);
+        const data_api_serie = await response_api_serie.json();
+
+        const filter_serie = data_api_serie.results.filter(item => {
+            return item.backdrop_path.length > 0 && item.name && item.overview.length < 300 && item.overview.length > 0 && item.vote_average;
+        });
+
+        const generate_index_of_serie = Math.floor(Math.random() * filter_serie.length);
+        const url_background = filter_serie[generate_index_of_serie].backdrop_path;
+        const base_url_to_serie = data_response_config.images.base_url;
+        const size_backgroud = data_response_config.images.backdrop_sizes[3];
+        const full_url_background = base_url_to_serie + size_backgroud + url_background;
+        const title_serie = filter_serie[generate_index_of_serie].name;
+        const overview_serie = filter_serie[generate_index_of_serie].overview;
+
+        console.log(filter_serie[generate_index_of_serie]);
 
         // insere url no background da imagem da série
-        container_serie.style.backgroundImage = `url('${url_image_serie}')`;
+        container_serie.style.backgroundImage = `url('${full_url_background}')`;
+
+        // insere título e overview da série
+        container_about_serie.appendChild(insertTitle_and_description_about_serie(title_serie, overview_serie));
+
+
+        // const url_image_serie = data_response_config.images.base_url + data_response_config.images.backdrop_sizes[3] + data_api_serie.results[1].backdrop_path;
+
 
     } catch(error) {
         console.log(error);
@@ -383,8 +404,8 @@ async function getResponseApi() {
         const response_to_id = await fetch(`https://api.themoviedb.org/3/tv/1396?api_key=${apiKey}&language=pt-BR`);
         const data_to_api_id = await response_to_id.json();
         
-        container_about_serie.appendChild(insertTitle_and_description_about_serie(data_to_api_id.original_name, data_to_api_id.overview));
-        container_avalation_serie.appendChild(insert_informations_about_serie('&#9733', `${data_to_api_id.vote_average.toFixed(1).replace(/\./g, ',')} |`, `Temporadas ${data_to_api_id.number_of_seasons} |`, `Episódios ${data_to_api_id.number_of_episodes}`));
+        // container_about_serie.appendChild(insertTitle_and_description_about_serie(data_to_api_id.original_name, data_to_api_id.overview));
+        // container_avalation_serie.appendChild(insert_informations_about_serie('&#9733', `${data_to_api_id.vote_average.toFixed(1).replace(/\./g, ',')} |`, `Temporadas ${data_to_api_id.number_of_seasons} |`, `Episódios ${data_to_api_id.number_of_episodes}`));
 
     } catch(error) {
         console.log(error);
