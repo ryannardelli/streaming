@@ -164,6 +164,7 @@ body {
 .btns {
     display: flex;
     gap: 30px;
+    max-width: 600px;
 }
 
 .btn-watch {
@@ -215,7 +216,6 @@ body {
 }
 
 .btn-watch:hover {
-    /* color: #31202b; */
     text-shadow: none;
 }
 
@@ -581,19 +581,20 @@ body {
     }
 
     .content {
-        max-width: 1200px;
-        color: #fff;
         text-align: center;
      }
 
      .img img {
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
+        display: none;
     }
 
     .container-vote {
         justify-content: center;
+    }
+
+    .btns {
+        justify-content: center;
+        flex-wrap: wrap;
     }
 
     .info_about_serie {
@@ -618,10 +619,20 @@ body {
 /* tela de tablet */
 @media (max-width: 600px), (max-width: 1025px) {
 
-    .container_movie {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        height: auto;
-        width: 100%;
+    .img img {
+        display: none;
+    }
+
+    .content {
+        text-align: center;
+     }
+
+     .container-vote {
+        justify-content: center;
+    }
+
+    .btns {
+        justify-content: center;
+        flex-wrap: wrap;
     }
 }
