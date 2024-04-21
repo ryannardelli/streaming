@@ -481,7 +481,6 @@ close_button.addEventListener('click', () => {
 });
 
 // script do sidebar
-
 const btn_open = document.querySelector('.btn-open');
 const sidebar = document.querySelector('.sidebar');
 
