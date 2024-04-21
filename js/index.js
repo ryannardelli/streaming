@@ -423,8 +423,6 @@ async function getResponseApi() {
         const total_pages = data_pages.total_pages;
         const generate_index_page = Math.floor(Math.random() * total_pages);
 
-        console.log(generate_index_page);
-
         const response_movies = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=pt-BR&page=${generate_index_page}`);
         const data_movies = await response_movies.json();
 
