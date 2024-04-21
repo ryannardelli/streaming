@@ -385,10 +385,6 @@ async function getResponseApi() {
         const overview_serie = filter_serie[generate_index_of_serie].overview;
         const id_serie = filter_serie[generate_index_of_serie].id;
 
-        console.log(id_serie);
-
-        console.log(filter_serie[generate_index_of_serie]);
-
         // insere url no background da imagem da série
         container_serie.style.backgroundImage = `url('${full_url_background}')`;
 
