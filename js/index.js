@@ -333,7 +333,7 @@ async function getResponseApi() {
 
         url_of_img_background_movie = base_url + size_img_background + url_background;
 
-        // insere imagem no background da sessão filme
+        // insere imagem no background da sessão do filme
         container_movie.style.backgroundImage = `url('${url_of_img_background_movie}')`;
 
         // insere titulo e overview do filme
@@ -373,7 +373,7 @@ async function getResponseApi() {
         const data_api_serie = await response_api_serie.json();
 
         const filter_serie = data_api_serie.results.filter(item => {
-            return item.backdrop_path.length > 0 && item.name && item.overview.length < 300 && item.overview.length > 0 && item.vote_average;
+            return item.backdrop_path && item.name && item.overview.length < 300 && item.overview.length > 0 && item.vote_average;
         });
 
         const generate_index_of_serie = Math.floor(Math.random() * filter_serie.length);
@@ -383,6 +383,9 @@ async function getResponseApi() {
         const full_url_background = base_url_to_serie + size_backgroud + url_background;
         const title_serie = filter_serie[generate_index_of_serie].name;
         const overview_serie = filter_serie[generate_index_of_serie].overview;
+        const id_serie = filter_serie[generate_index_of_serie].id;
+
+        console.log(id_serie);
 
         console.log(filter_serie[generate_index_of_serie]);
 
@@ -395,6 +398,12 @@ async function getResponseApi() {
 
         // const url_image_serie = data_response_config.images.base_url + data_response_config.images.backdrop_sizes[3] + data_api_serie.results[1].backdrop_path;
 
+        const response_id_serie = await fetch(`https://api.themoviedb.org/3/tv/${id_serie}?api_key=${apiKey}&language=pt-BR`);
+        const data_response_id = await response_id_serie.json();
+
+        // insere a avaliação da série, número de temporadas e episódios da série
+
+         container_avalation_serie.appendChild(insert_informations_about_serie('&#9733', `${data_response_id.vote_average.toFixed(1).replace(/\./g, ',')} |`, `Temporadas ${data_response_id.number_of_seasons} |`, `Episódios ${data_response_id.number_of_episodes}`));
 
     } catch(error) {
         console.log(error);
