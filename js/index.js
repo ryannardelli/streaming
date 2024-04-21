@@ -274,6 +274,7 @@ async function getResponseApi() {
         });
 
         const generate_index_of_movie = Math.floor(Math.random() * filter_movies.length);
+        const generate_index_for_logo = Math.floor(Math.random() * filter_movies[generate_index_of_movie].production_companies.length);
         const url_background = filter_movies[generate_index_of_movie].backdrop_path;
         const title_movie = filter_movies[generate_index_of_movie].title;
         const overview_movie = filter_movies[generate_index_of_movie].overview;
@@ -284,6 +285,18 @@ async function getResponseApi() {
         const genre_one_movie = filter_movies[generate_index_of_movie].genres[0].name;
         const genre_two_movie = filter_movies[generate_index_of_movie].genres[1].name;
         const id_movie = filter_movies[generate_index_of_movie].id;
+        const logo_size = data_config.images.logo_sizes[1];
+        const url_logo = filter_movies[generate_index_of_movie].production_companies[generate_index_for_logo].logo_path;
+        const name_companie = filter_movies[generate_index_of_movie].production_companies[generate_index_for_logo].name;
+
+        console.log(generate_index_for_logo);
+        console.log(data_config);
+        
+        console.log(filter_movies[generate_index_of_movie]);
+
+        // insere logo e texto alternativo
+        logo.src = base_url + logo_size + url_logo;
+        logo.alt = name_companie;
 
         const response_video = await fetch(`https://api.themoviedb.org/3/movie/${id_movie}/videos?api_key=${apiKey}&language=pt-BR`);
         const data_video = await response_video.json();
@@ -362,7 +375,6 @@ async function getResponseApi() {
         // insere url no background da imagem da série
         container_serie.style.backgroundImage = `url('${url_image_serie}')`;
 
-        // console.log(data_api_serie.results[1]);
     } catch(error) {
         console.log(error);
     }
