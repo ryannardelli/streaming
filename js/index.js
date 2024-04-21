@@ -212,13 +212,9 @@ async function getResponseApi() {
         const total_pages = data_pages.total_pages;
         const generate_index_page = Math.floor(Math.random() * total_pages);
 
-        console.log(generate_index_page);
-
         const response_api = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}&language=pt-BR&page=${generate_index_page}`, options);
 
         const data_api = await response_api.json();
-
-        console.log(data_api);
 
         data_api.results.forEach(item => {
             posters.push(item.poster_path);
@@ -237,17 +233,6 @@ async function getResponseApi() {
             const alt = name_of_movies[index];
             swiper_wrapper.appendChild(insertDivWithContent(src, alt));
         });
-
-        // result_api.push(data_api.results);
-        // result_api.forEach(itens => {
-        //     for(let item of itens) {
-        //         srcs_img.push(base_url + size + item.poster_path);
-        //     }
-        // });
-    
-        // srcs_img.forEach(src => {
-        //     swiper_wrapper.appendChild(insertDivWithContent(src));
-        // });
 
     } catch(error) {
         console.log(error);
@@ -425,9 +410,6 @@ async function getResponseApi() {
     try {
         const response_to_id = await fetch(`https://api.themoviedb.org/3/tv/1396?api_key=${apiKey}&language=pt-BR`);
         const data_to_api_id = await response_to_id.json();
-        
-        // container_about_serie.appendChild(insertTitle_and_description_about_serie(data_to_api_id.original_name, data_to_api_id.overview));
-        // container_avalation_serie.appendChild(insert_informations_about_serie('&#9733', `${data_to_api_id.vote_average.toFixed(1).replace(/\./g, ',')} |`, `Temporadas ${data_to_api_id.number_of_seasons} |`, `Episódios ${data_to_api_id.number_of_episodes}`));
 
     } catch(error) {
         console.log(error);
