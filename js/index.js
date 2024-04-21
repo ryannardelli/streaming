@@ -39,10 +39,11 @@ function createParagraph() {
     return p;
 };
 
-function insertDivWithContent(src_img) {
+function insertDivWithContent(src_img, alt_img) {
     const div = createDiv();
     const img = createImg();
     img.src = src_img;
+    img.alt = alt_img;
 
     div.appendChild(img);
     div.classList.add('swiper-slide');
@@ -195,42 +196,58 @@ const options = {
 
 async function getResponseApi() {
     try {
-        const response = await fetch(`https://api.themoviedb.org/3/movie/550/videos?api_key=${apiKey}&language=pt-BR`, options);
-        const data = await response.json();
-    } catch(error) {
-        console.log(error);
-    }
+        let result_api = [];
+        let posters = [];
+        let name_of_movies = [];
+        let src_imgs = [];
 
-    let result_api = [];
-    let size;
-    let base_url;
-    let srcs_img = [];
-    let about_movie = [];
+        const response_config = await fetch('https://api.themoviedb.org/3/configuration', options);
+        const data_configuration = await response_config.json();
+        const size_img = data_configuration.images.poster_sizes[6];
+        const base_url_img = data_configuration.images.base_url;
 
-    try {
-        const response = await fetch('https://api.themoviedb.org/3/configuration', options);
-        const data_configuration = await response.json();
-        size = data_configuration.images.poster_sizes[6]; // tamanho original
-        base_url = data_configuration.images.base_url;
-    } catch(error) {
-        console.log(error);
-    }
+        const response_pages = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}&language=pt-BR`);
+        const data_pages = await response_pages.json();
 
+        const total_pages = data_pages.total_pages;
+        const generate_index_page = Math.floor(Math.random() * total_pages);
 
-    try {
-        const response_api = await fetch('https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}&language=pt-BR', options);
+        console.log(generate_index_page);
+
+        const response_api = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}&language=pt-BR&page=${generate_index_page}`, options);
+
         const data_api = await response_api.json();
-        result_api.push(data_api.results);
-        result_api.forEach(itens => {
-            for(let item of itens) {
-                srcs_img.push(base_url + size + item.poster_path);
-                about_movie.push(item);
-            }
+
+        console.log(data_api);
+
+        data_api.results.forEach(item => {
+            posters.push(item.poster_path);
         });
+
+        data_api.results.forEach(item => {
+            name_of_movies.push(item.title);
+        });
+
+        for(let url of posters) {
+            src_imgs.push(base_url_img + size_img + url);
+        }
+
+        src_imgs.forEach((element, index) => {
+            const src = src_imgs[index];
+            const alt = name_of_movies[index];
+            swiper_wrapper.appendChild(insertDivWithContent(src, alt));
+        });
+
+        // result_api.push(data_api.results);
+        // result_api.forEach(itens => {
+        //     for(let item of itens) {
+        //         srcs_img.push(base_url + size + item.poster_path);
+        //     }
+        // });
     
-        srcs_img.forEach(src => {
-            swiper_wrapper.appendChild(insertDivWithContent(src));
-        });
+        // srcs_img.forEach(src => {
+        //     swiper_wrapper.appendChild(insertDivWithContent(src));
+        // });
 
     } catch(error) {
         console.log(error);
