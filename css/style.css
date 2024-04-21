@@ -277,6 +277,10 @@ body {
     border-radius: 20px;
 }
 
+.item-description {
+    color: #fff;
+}
+
 .menu {
     display: flex;
     min-height: 100vh;
