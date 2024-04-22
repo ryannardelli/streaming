@@ -196,7 +196,6 @@ const options = {
 
 async function getResponseApi() {
     try {
-        let result_api = [];
         let posters = [];
         let name_of_movies = [];
         let src_imgs = [];
@@ -216,11 +215,15 @@ async function getResponseApi() {
 
         const data_api = await response_api.json();
 
-        data_api.results.forEach(item => {
+        const filter_movies = data_api.results.filter(item => {
+            return item.poster_path && item.title;
+        });
+
+        filter_movies.forEach(item => {
             posters.push(item.poster_path);
         });
 
-        data_api.results.forEach(item => {
+        filter_movies.forEach(item => {
             name_of_movies.push(item.title);
         });
 
@@ -238,18 +241,10 @@ async function getResponseApi() {
         console.log(error);
     }
 
-    // filmes nos cinemas agora
     try {
-        const response_api = await fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=pt-BR`, options);
-        const data_api = await response_api.json();
-    } catch(error) {
-        console.log(error);
-    }
-
-    try {
+        let trailers = [];
         let ids = [];
         let movies = [];
-        let trailers = [];
 
         const response_config = await fetch('https://api.themoviedb.org/3/configuration');
         const data_config = await response_config.json();
@@ -257,11 +252,23 @@ async function getResponseApi() {
         const base_url = data_config.images.base_url;
         const size_img_background = data_config.images.backdrop_sizes[3];
 
-        const response_id = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR`);
+        const response_pages = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR`);
+        const data_pages = await response_pages.json();
+        const tot_pages = data_pages.total_pages;
 
-        const data_api_id = await response_id.json();
+        const generate_number_index_page = Math.floor(Math.random() * 500);
 
-        data_api_id.results.filter(item => {
+        // console.log(generate_number_index_page);
+
+        const response_movie_description = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&page=${generate_number_index_page}`);
+        const data_movie_description = await response_movie_description.json();
+
+
+        const filter_movies = data_movie_description.results.filter(item => {
+            return item.overview.length < 300 && item.overview.length > 0 && item.title && item.vote_average >= 7 && item.poster_path && item.backdrop_path;
+        });
+
+        filter_movies.forEach(item => {
             ids.push(item.id);
         });
 
@@ -270,26 +277,25 @@ async function getResponseApi() {
             const data_description = await response_description.json();
             movies.push(data_description);
         }
-        
-        const filter_movies = movies.filter(item => {
-            return item.overview && item.title && item.vote_average && item.poster_path;
-        });
-
+                
         const generate_index_of_movie = Math.floor(Math.random() * filter_movies.length);
-        const generate_index_for_logo = Math.floor(Math.random() * filter_movies[generate_index_of_movie].production_companies.length);
-        const url_background = filter_movies[generate_index_of_movie].backdrop_path;
-        const title_movie = filter_movies[generate_index_of_movie].title;
-        const overview_movie = filter_movies[generate_index_of_movie].overview;
+
+        const generate_index_for_logo = Math.floor(Math.random() * movies[generate_index_of_movie].production_companies.length);
+        const url_background = movies[generate_index_of_movie].backdrop_path;
+        const title_movie = movies[generate_index_of_movie].title;
+        const overview_movie = movies[generate_index_of_movie].overview;
         const poster_size = data_config.images.poster_sizes[4];
-        const url_poster = filter_movies[generate_index_of_movie].poster_path;
-        const date = filter_movies[generate_index_of_movie].release_date.slice(0, 4);
-        const vote_population = filter_movies[generate_index_of_movie].vote_average.toFixed(1).replace(/\./g, ',');
-        const genre_one_movie = filter_movies[generate_index_of_movie].genres[0].name;
-        const genre_two_movie = filter_movies[generate_index_of_movie].genres[1].name;
-        const id_movie = filter_movies[generate_index_of_movie].id;
+        const url_poster = movies[generate_index_of_movie].poster_path;
+        const date = movies[generate_index_of_movie].release_date.slice(0, 4);
+        const vote_population = movies[generate_index_of_movie].vote_average.toFixed(1).replace(/\./g, ',');
+        const genre_one_movie = movies[generate_index_of_movie].genres[0].name;
+        const genre_two_movie = movies[generate_index_of_movie].genres[1].name;
+        const id_movie = movies[generate_index_of_movie].id;
         const logo_size = data_config.images.logo_sizes[1];
-        const url_logo = filter_movies[generate_index_of_movie].production_companies[generate_index_for_logo].logo_path;
-        const name_companie = filter_movies[generate_index_of_movie].production_companies[generate_index_for_logo].name;
+        const url_logo = movies[generate_index_of_movie].production_companies[generate_index_for_logo].logo_path;
+        const name_companie = movies[generate_index_of_movie].production_companies[generate_index_for_logo].name;
+
+        console.log(movies[generate_index_of_movie]);
 
         // insere logo e texto alternativo
         logo.src = base_url + logo_size + url_logo;
@@ -333,7 +339,7 @@ async function getResponseApi() {
 
         set_url_trailer();
 
-        url_of_img_background_movie = base_url + size_img_background + url_background;
+        const url_of_img_background_movie = base_url + size_img_background + url_background;
 
         // insere imagem no background da sessão do filme
         container_movie.style.backgroundImage = `url('${url_of_img_background_movie}')`;
@@ -425,8 +431,6 @@ async function getResponseApi() {
         const response_movies = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=pt-BR&page=${generate_index_page}`);
         const data_movies = await response_movies.json();
 
-        console.log(data_movies);
-
         const response_api_config = await fetch('https://api.themoviedb.org/3/configuration');
         const data_response_config = await response_api_config.json();
 
@@ -437,6 +441,7 @@ async function getResponseApi() {
         let date_movies_year = [];
 
         movies.push(data_movies.results);
+
         movies.forEach(movies => {
             for(let movie of movies) {
                 element_movies.push(movie);
