@@ -261,7 +261,6 @@ async function getResponseApi() {
         const response_movie_description = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&page=${generate_number_index_page}`);
         const data_movie_description = await response_movie_description.json();
 
-
         const filter_movies = data_movie_description.results.filter(item => {
             return item.overview.length < 300 && item.overview.length > 0 && item.title && item.vote_average >= 7 && item.poster_path && item.backdrop_path;
         });
