@@ -209,21 +209,21 @@ async function getResponseApi() {
         const data_pages = await response_pages.json();
 
         const total_pages = data_pages.total_pages;
-        const generate_index_page = Math.floor(Math.random() * total_pages);
+        const generate_index_page = Math.floor(Math.random() * 500);
 
         const response_api = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}&language=pt-BR&page=${generate_index_page}`, options);
 
         const data_api = await response_api.json();
 
-        const filter_movies = data_api.results.filter(item => {
-            return item.poster_path && item.title;
+        const filter_poster = data_api.results.filter(item => {        
+           return item.poster_path && item.title;
         });
 
-        filter_movies.forEach(item => {
+        filter_poster.forEach(item => {
             posters.push(item.poster_path);
         });
 
-        filter_movies.forEach(item => {
+        filter_poster.forEach(item => {
             name_of_movies.push(item.title);
         });
 
@@ -257,8 +257,6 @@ async function getResponseApi() {
         const tot_pages = data_pages.total_pages;
 
         const generate_number_index_page = Math.floor(Math.random() * 500);
-
-        // console.log(generate_number_index_page);
 
         const response_movie_description = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&page=${generate_number_index_page}`);
         const data_movie_description = await response_movie_description.json();
@@ -294,8 +292,6 @@ async function getResponseApi() {
         const logo_size = data_config.images.logo_sizes[1];
         const url_logo = movies[generate_index_of_movie].production_companies[generate_index_for_logo].logo_path;
         const name_companie = movies[generate_index_of_movie].production_companies[generate_index_for_logo].name;
-
-        console.log(movies[generate_index_of_movie]);
 
         // insere logo e texto alternativo
         logo.src = base_url + logo_size + url_logo;
