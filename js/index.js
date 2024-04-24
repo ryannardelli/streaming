@@ -268,7 +268,6 @@ async function getResponseApi() {
             movies.push(data_description);
         }
      
-        
         const generate_index_of_movie = Math.floor(Math.random() * filter_movies.length);
         const generate_index_for_logo = Math.floor(Math.random() * movies[generate_index_of_movie].production_companies.length);
         const url_background = movies[generate_index_of_movie].backdrop_path;
@@ -282,12 +281,12 @@ async function getResponseApi() {
         const genre_two_movie = movies[generate_index_of_movie].genres[1].name;
         const id_movie = movies[generate_index_of_movie].id;
         const logo_size = data_config.images.logo_sizes[1];
+
+        // pendente
         // const url_logo = movies[generate_index_of_movie].production_companies[generate_index_for_logo].logo_path;
         // const name_companie = movies[generate_index_of_movie].production_companies[generate_index_for_logo].name;
 
-        let movie_to_filter_logo = [];
-
-        movie_to_filter_logo.push(movies[generate_index_of_movie]);
+        //pendente
         // insere logo e texto alternativo
         // logo.src = base_url + logo_size + url_logo;
         // logo.alt = name_companie;
