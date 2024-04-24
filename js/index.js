@@ -269,7 +269,7 @@ async function getResponseApi() {
         }
      
         const generate_index_of_movie = Math.floor(Math.random() * filter_movies.length);
-        const generate_index_for_logo = Math.floor(Math.random() * movies[generate_index_of_movie].production_companies.length);
+        // const generate_index_for_logo = Math.floor(Math.random() * movies[generate_index_of_movie].production_companies.length);
         const url_background = movies[generate_index_of_movie].backdrop_path;
         const title_movie = movies[generate_index_of_movie].title;
         const overview_movie = movies[generate_index_of_movie].overview;
