@@ -280,9 +280,9 @@ async function getResponseApi() {
         const genre_one_movie = movies[generate_index_of_movie].genres[0].name;
         const genre_two_movie = movies[generate_index_of_movie].genres[1].name;
         const id_movie = movies[generate_index_of_movie].id;
-        const logo_size = data_config.images.logo_sizes[1];
-
+        
         // pendente
+        // const logo_size = data_config.images.logo_sizes[1];
         // const url_logo = movies[generate_index_of_movie].production_companies[generate_index_for_logo].logo_path;
         // const name_companie = movies[generate_index_of_movie].production_companies[generate_index_for_logo].name;
 
