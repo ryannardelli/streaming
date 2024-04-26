@@ -485,8 +485,6 @@ body {
 }
 
 .container-items {
-    display: flex;
-    align-items: center;
     padding: 20px;
 }
 
@@ -503,6 +501,39 @@ body {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+
+.container-pages {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.item-pages {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.item-pages i {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.btn-pages {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    background: #007aff;
+    color: white;
+    font-weight: 300;
+    padding: 10px;
+    cursor: pointer;
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
 }
 
 .container_serie {
