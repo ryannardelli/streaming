@@ -19,10 +19,11 @@
 }
 
 body {
-    width: 100%;
+    width: 100vw;
     min-height: 100vh;
     background: var(--color-background);
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
 }
 
 .container_movie {
@@ -297,7 +298,6 @@ body {
     justify-content: space-between;
     background: #0a0a0a;
     height: 100vh;
-    /* border-radius: 0px 18px 18px 0px; */
     position: relative;
     transition: all .5s;
     min-width: 82px;
@@ -488,15 +488,14 @@ body {
     display: flex;
     align-items: center;
     padding: 20px;
-    height: 100vh;
 }
 
 .container-movies-description {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 30px;
-    max-width: calc(100vw - 150px);
     max-height: 80vh;
+    max-width: calc(100vw - 100px);
     overflow: auto;
 }
 
