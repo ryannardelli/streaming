@@ -254,33 +254,55 @@ async function getResponseApi() {
         const response_movie_description = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&page=${generate_number_index_page}`);
         const data_movie_description = await response_movie_description.json();
 
-        const filter_movies = data_movie_description.results.filter(item => {
-            return item.overview.length < 300 && item.overview.length > 0 && item.title && item.vote_average >= 7 && item.poster_path && item.backdrop_path;
+        // const filter_movies = data_movie_description.results.filter(item => {
+        //     return item.overview.length < 300 && item.overview.length > 0 && item.title.length > 0 && item.vote_average >= 7 && item.poster_path && item.backdrop_path.length > 0;
+        // });
+
+        // filter_movies.forEach(item => {
+        //     ids.push(item.id);
+        // });
+
+        const movies_id = data_movie_description.results.map(item => {
+            return item;
         });
 
-        filter_movies.forEach(item => {
+        movies_id.forEach(item => {
             ids.push(item.id);
         });
+
+        // movies.forEach(item => {
+        //     ids.push(item.id);
+        // })
 
         for (let id of ids) {
             const response_description = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=pt-BR`);
             const data_description = await response_description.json();
             movies.push(data_description);
         }
-     
+
+        const filter_movies = movies.filter(item => {
+            return item.overview.length < 300 && item.overview.length > 0 && item.title.length > 0 && item.vote_average >= 7 && item.poster_path && item.backdrop_path !== null && item.genres.length > 1;
+        });
+
+        console.log(filter_movies);
+
+        // const filter_genre_movies = movies.filter(item => {
+        //     return item.genres.length > 1;
+        // });
+
         const generate_index_of_movie = Math.floor(Math.random() * filter_movies.length);
-        // const generate_index_for_logo = Math.floor(Math.random() * movies[generate_index_of_movie].production_companies.length);
-        const url_background = movies[generate_index_of_movie].backdrop_path;
-        const title_movie = movies[generate_index_of_movie].title;
-        const overview_movie = movies[generate_index_of_movie].overview;
+        // const generate_index_for_logo = Math.floor(Math.random() * filter_movies[generate_index_of_movie].production_companies.length);
+        const url_background = filter_movies[generate_index_of_movie].backdrop_path;
+        const title_movie = filter_movies[generate_index_of_movie].title;
+        const overview_movie = filter_movies[generate_index_of_movie].overview;
         const poster_size = data_config.images.poster_sizes[4];
-        const url_poster = movies[generate_index_of_movie].poster_path;
-        const date = movies[generate_index_of_movie].release_date.slice(0, 4);
-        const vote_population = movies[generate_index_of_movie].vote_average.toFixed(1).replace(/\./g, ',');
-        const genre_one_movie = movies[generate_index_of_movie].genres[0].name;
-        const genre_two_movie = movies[generate_index_of_movie].genres[1].name;
-        const id_movie = movies[generate_index_of_movie].id;
-        
+        const url_poster = filter_movies[generate_index_of_movie].poster_path;
+        const date = filter_movies[generate_index_of_movie].release_date.slice(0, 4);
+        const vote_population = filter_movies[generate_index_of_movie].vote_average.toFixed(1).replace(/\./g, ',');
+        const genre_one_movie = filter_movies[generate_index_of_movie].genres[0].name;
+        const genre_two_movie = filter_movies[generate_index_of_movie].genres[1].name;
+        const id_movie = filter_movies[generate_index_of_movie].id;
+    
         // pendente
         // const logo_size = data_config.images.logo_sizes[1];
         // const url_logo = movies[generate_index_of_movie].production_companies[generate_index_for_logo].logo_path;
