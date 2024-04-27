@@ -37,6 +37,8 @@ body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+     backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .content {
@@ -45,6 +47,10 @@ body {
    background: transparent;
    color: #fff;
    max-width: 800px;
+   backdrop-filter: blur(5px);
+   -webkit-backdrop-filter: blur(5px);
+   background: transparent;
+   padding: 10px;
 }
 
 /* .container_movie {
@@ -186,6 +192,10 @@ body {
 }
 
 .btn-watch {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
     font-size: 34px;
     font-weight: bolder;
     display: inline-block;
@@ -234,6 +244,7 @@ body {
 }
 
 .btn-watch:hover {
+    color: #0a0a0a;
     text-shadow: none;
 }
 
