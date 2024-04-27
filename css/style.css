@@ -580,6 +580,13 @@ body {
     overflow: auto;
 }
 
+.no_result_paragraph {
+    white-space: nowrap;
+    font-family: 'Opens San';
+    font-size: 20px;
+    font-weight: 300;
+}
+
 .title_of_movie {
     overflow: hidden;
     white-space: nowrap;

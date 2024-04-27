@@ -19,6 +19,7 @@ const container_about_serie = document.querySelector('.container_about_serie');
 const container_avalation_serie = document.querySelector('.avaliation_serie');
 const section_movies_description = document.querySelector('.container-movies-description');
 const container_logo = document.querySelector('.container-logo');
+const input_search = document.querySelector('#input_search');
 
 function createImg() {
     const img = document.createElement('img');
@@ -438,6 +439,9 @@ async function getResponseApi() {
         const response_api_config = await fetch('https://api.themoviedb.org/3/configuration');
         const data_response_config = await response_api_config.json();
 
+        const base_url = data_response_config.images.base_url;
+        const size = data_response_config.images.poster_sizes[2];
+
         let movies = [];
         let src_imgs = [];
         let element_movies = [];
@@ -472,6 +476,25 @@ async function getResponseApi() {
             const date_year = date_movies_year[index];
             section_movies_description.appendChild(insert_posters_movies(src, title, date_year));
         })
+
+        // script que filtra os elementos a partir da pesquisa do input
+        input_search.addEventListener('input', (e) => {
+            const valueSearch = e.target.value.trim();
+            const filter_title_movie = element_movies.filter(item => item.title.toLowerCase().includes(valueSearch));
+            section_movies_description.innerHTML = '';
+
+            if(filter_title_movie.length === 0) {
+                const noResult = document.createElement('p');
+                noResult.classList.add('no_result_paragraph');
+                noResult.innerHTML = 'Nenhum resultado foi encontrado';
+                section_movies_description.appendChild(noResult);
+            } else {
+                filter_title_movie.forEach(movie => {
+                    const src = base_url + size + movie.poster_path;
+                    section_movies_description.appendChild(insert_posters_movies(src, movie.title, movie.release_date.slice(0, 4)));
+                })
+            }
+        });
 
     } catch(error) {
         console.log(error);
