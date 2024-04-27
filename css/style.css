@@ -595,6 +595,14 @@ body {
     text-shadow: 1px 1px 2px #000;
 }
 
+.container_serie p::after {
+    content: " |";
+}
+
+.container_serie p:last-child::after, .container_serie p:first-child::after {
+    content: "";
+}
+
 .container_about_serie p {
     line-height: 1.5rem;
     margin-bottom: 0.8rem;
@@ -608,6 +616,7 @@ body {
     text-shadow: 1px 1px 2px #000;
     font-size: 1.5rem;
     white-space: nowrap;
+    max-width: 300px;
 }
 
 .iframe-container {
@@ -684,8 +693,17 @@ body {
         text-align: center;
     }
 
+    .container_serie h1 {
+        white-space: wrap;
+    }
+
     .info_about_serie {
-        justify-content: center;
+        flex-wrap: wrap;
+        margin: 0 auto;
+    }
+
+    .container_serie p::after {
+        content: "";
     }
 }
 

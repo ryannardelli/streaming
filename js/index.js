@@ -397,7 +397,7 @@ async function getResponseApi() {
 
         // insere a avaliação da série, número de temporadas e episódios da série
 
-         container_avalation_serie.appendChild(insert_informations_about_serie('&#9733', `${data_response_id.vote_average.toFixed(1).replace(/\./g, ',')} |`, `Temporadas ${data_response_id.number_of_seasons} |`, `Episódios ${data_response_id.number_of_episodes}`));
+         container_avalation_serie.appendChild(insert_informations_about_serie('&#9733', `${data_response_id.vote_average.toFixed(1).replace(/\./g, ',')}`, `Temporadas ${data_response_id.number_of_seasons}`, `Episódios ${data_response_id.number_of_episodes}`));
 
     } catch(error) {
         console.log(error);
