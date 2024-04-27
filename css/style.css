@@ -21,7 +21,6 @@
 }
 
 body {
-    min-height: 100vh;
     background: var(--color-background);
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 }
@@ -607,7 +606,7 @@ body {
 .container-pages {
     display: flex;
     justify-content: center;
-    margin-top: 30px;
+    padding: 10px;
 }
 
 .item-pages {
@@ -627,7 +626,7 @@ body {
     justify-content: center;
     font-size: 16px;
     color: white;
-    font-weight: 300;
+    font-weight: 600;
     padding: 10px;
     cursor: pointer;
     height: 32px;
