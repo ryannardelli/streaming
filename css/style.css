@@ -88,6 +88,7 @@ body {
     font-size: 2.5rem;
     text-shadow: 1px 1px 2px #000;
     margin-bottom: 0.5rem;
+    white-space: nowrap;
 }
 
 .date_movie {
@@ -140,6 +141,17 @@ body {
     padding-top: 1.3rem;
     gap: 5px;
     margin-inline: 10px;
+}
+
+.container-overview {
+    max-width: 1200px;
+    font-size: 1.3rem;
+    text-shadow: 1px 1px 2px #000;
+    font-weight: 300;
+}
+
+.overview-about-movie {
+    line-height: 1.8rem;
 }
 
 .container_overview_movie span {
@@ -642,6 +654,10 @@ body {
 
     .container-vote {
         justify-content: center;
+    }
+
+    .title_movie {
+        white-space: wrap;
     }
 
     .btns {
