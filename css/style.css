@@ -19,11 +19,9 @@
 }
 
 body {
-    width: 100vw;
     min-height: 100vh;
     background: var(--color-background);
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-    overflow-x: hidden;
 }
 
 .container_movie {
@@ -302,6 +300,7 @@ body {
     transition: all .5s;
     min-width: 82px;
     box-shadow: 3px 0 0 #FF0077;
+    z-index: 2;
 }
 
 .sidebar_content {
@@ -484,11 +483,17 @@ body {
     left: 25px;
 }
 
+.menu {
+    position: relative;
+}
+
 .container-items {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
     padding: 20px;
+    z-index: 1;
+    position: absolute;
+    padding-left: calc(82px + 20px);
+    top: 0;
+    left: 0;
 }
 
 .container-movies-description::-webkit-scrollbar {
