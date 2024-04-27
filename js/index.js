@@ -255,14 +255,6 @@ async function getResponseApi() {
         const response_movie_description = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&page=${generate_number_index_page}`);
         const data_movie_description = await response_movie_description.json();
 
-        // const filter_movies = data_movie_description.results.filter(item => {
-        //     return item.overview.length < 300 && item.overview.length > 0 && item.title.length > 0 && item.vote_average >= 7 && item.poster_path && item.backdrop_path.length > 0;
-        // });
-
-        // filter_movies.forEach(item => {
-        //     ids.push(item.id);
-        // });
-
         const movies_id = data_movie_description.results.map(item => {
             return item;
         });
@@ -270,10 +262,6 @@ async function getResponseApi() {
         movies_id.forEach(item => {
             ids.push(item.id);
         });
-
-        // movies.forEach(item => {
-        //     ids.push(item.id);
-        // })
 
         for (let id of ids) {
             const response_description = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=pt-BR`);
@@ -284,12 +272,6 @@ async function getResponseApi() {
         const filter_movies = movies.filter(item => {
             return item.overview.length < 300 && item.overview.length > 0 && item.title.length > 0 && item.vote_average >= 7 && item.poster_path && item.backdrop_path !== null && item.genres.length > 1;
         });
-
-        console.log(filter_movies);
-
-        // const filter_genre_movies = movies.filter(item => {
-        //     return item.genres.length > 1;
-        // });
 
         const generate_index_of_movie = Math.floor(Math.random() * filter_movies.length);
         // const generate_index_for_logo = Math.floor(Math.random() * filter_movies[generate_index_of_movie].production_companies.length);
@@ -518,4 +500,14 @@ const sidebar = document.querySelector('.sidebar');
 
 btn_open.addEventListener('click', () => {
     sidebar.classList.toggle('open-sidebar');
+});
+
+// script que coloca foco no input de pesquisa quando acionado
+document.querySelector('#icon_search').addEventListener('mouseover', () => {
+    input_search.focus();
+});
+
+// script que remove o foco no input quando o usuário tirar o mouse do ícone
+document.querySelector('#icon_search').addEventListener('mouseout', () => {
+    input_search.blur();
 });
