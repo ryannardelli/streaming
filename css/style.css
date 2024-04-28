@@ -689,21 +689,6 @@ body {
 /* tela de celular */
 @media (min-width: 320px) and (max-width: 600px) {
 
-    .container_movie {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 30px;
-        height: auto;
-        width: 100%;
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-    }
-
     .swiper-slide img {
         display: block;
         width: 100%;
