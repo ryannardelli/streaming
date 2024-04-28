@@ -36,7 +36,7 @@ body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-     backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
 }
 
@@ -645,15 +645,12 @@ body {
     content: "";
 }
 
-.container_about_serie {
-    max-width: 1200px;
-}
-
 .container_about_serie p {
     line-height: 1.5rem;
     margin-bottom: 0.8rem;
     font-size: 1.3rem;
     text-shadow: 1px 1px 2px #000;
+    max-width: 1200px;
 }
 
 .info_about_serie {
@@ -662,7 +659,7 @@ body {
     text-shadow: 1px 1px 2px #000;
     font-size: 1.5rem;
     white-space: nowrap;
-    max-width: 300px;
+    max-width: 1200px;
 }
 
 .iframe-container {
@@ -693,7 +690,18 @@ body {
 @media (min-width: 320px) and (max-width: 600px) {
 
     .container_movie {
-        background-attachment: normal;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        height: auto;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
     }
 
     .swiper-slide img {
