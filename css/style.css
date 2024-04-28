@@ -622,12 +622,16 @@ body {
     color: var(--color-font);
 }
 
+.avaliation_serie {
+    max-width: 1200px;
+}
+
 .container_serie h1 {
     font-size: 2.5rem;
     margin-bottom: 0.8rem;
     font-weight: bolder;
     text-shadow: 1px 1px 2px #000;
-    white-space: nowrap;
+    max-width: 1200px;
 }
 
 .container_serie p {
@@ -650,7 +654,6 @@ body {
     margin-bottom: 0.8rem;
     font-size: 1.3rem;
     text-shadow: 1px 1px 2px #000;
-    max-width: 1200px;
 }
 
 .info_about_serie {
@@ -658,7 +661,6 @@ body {
     gap: 10px;
     text-shadow: 1px 1px 2px #000;
     font-size: 1.5rem;
-    white-space: nowrap;
     max-width: 1200px;
 }
 
@@ -723,6 +725,7 @@ body {
 
     .info_about_serie {
         display: flex;
+        justify-content: center;
         gap: 10px;
         text-shadow: 1px 1px 2px #000;
         font-size: 1.0rem;
@@ -751,10 +754,6 @@ body {
 
     .container_serie p::after {
         content: "";
-    }
-
-    .container_serie h1 {
-        white-space: wrap;
     }
 }
 
