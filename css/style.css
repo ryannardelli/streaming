@@ -679,6 +679,10 @@ body {
     content: "";
 }
 
+.container_about_serie {
+    max-width: 1200px;
+}
+
 .container_about_serie p {
     line-height: 1.5rem;
     margin-bottom: 0.8rem;
@@ -788,6 +792,10 @@ body {
 
     .container_serie p::after {
         content: "";
+    }
+
+    .container_serie h1 {
+        white-space: wrap;
     }
 }
 
