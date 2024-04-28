@@ -726,6 +726,10 @@ body {
 /* tela de celular */
 @media (min-width: 320px) and (max-width: 600px) {
 
+    .container_movie {
+        background-attachment: normal;
+    }
+
     .swiper-slide img {
         display: block;
         width: 100%;
