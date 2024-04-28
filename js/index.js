@@ -369,7 +369,7 @@ async function getResponseApi() {
         const data_api_serie = await response_api_serie.json();
 
         const filter_serie = data_api_serie.results.filter(item => {
-            return item.backdrop_path && item.name && item.overview.length < 300 && item.overview.length > 0 && item.vote_average && item.backdrop_path !== undefined && item.backdrop_path !== null;
+            return item.backdrop_path && item.name && item.overview.length < 200 && item.overview.length > 0 && item.vote_average && item.backdrop_path !== undefined && item.backdrop_path !== null;
         });
 
         const generate_index_of_serie = Math.floor(Math.random() * filter_serie.length);
