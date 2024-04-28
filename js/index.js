@@ -251,8 +251,6 @@ async function getResponseApi() {
         const base_url = data_config.images.base_url;
         const size_img_background = data_config.images.backdrop_sizes[3];
 
-        // const generate_number_index_page = Math.floor(Math.random() * 500) + 1;
-
         const response_movie_description = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&page=${currentPage}`);
         const data_movie_description = await response_movie_description.json();
 
@@ -280,9 +278,6 @@ async function getResponseApi() {
         }
 
         const generate_index_of_movie = Math.floor(Math.random() * filter_movies.length);
-        console.log(filter_movies);
-        console.log(filter_movies[generate_index_of_movie]);
-        // const generate_index_for_logo = Math.floor(Math.random() * filter_movies[generate_index_of_movie].production_companies.length);
         const url_background = filter_movies[generate_index_of_movie].backdrop_path;
         const title_movie = filter_movies[generate_index_of_movie].title;
         const overview_movie = filter_movies[generate_index_of_movie].overview;
@@ -293,16 +288,6 @@ async function getResponseApi() {
         const genre_one_movie = filter_movies[generate_index_of_movie].genres[0].name;
         const genre_two_movie = filter_movies[generate_index_of_movie].genres[1].name;
         const id_movie = filter_movies[generate_index_of_movie].id;
-    
-        // pendente
-        // const logo_size = data_config.images.logo_sizes[1];
-        // const url_logo = movies[generate_index_of_movie].production_companies[generate_index_for_logo].logo_path;
-        // const name_companie = movies[generate_index_of_movie].production_companies[generate_index_for_logo].name;
-
-        //pendente
-        // insere logo e texto alternativo
-        // logo.src = base_url + logo_size + url_logo;
-        // logo.alt = name_companie;
 
         const response_video = await fetch(`https://api.themoviedb.org/3/movie/${id_movie}/videos?api_key=${apiKey}&language=pt-BR`);
         const data_video = await response_video.json();
