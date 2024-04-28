@@ -243,6 +243,7 @@ async function getResponseApi() {
         let trailers = [];
         let ids = [];
         let movies = [];
+        let currentPage = Math.floor(Math.random() * 500) + 1;
 
         const response_config = await fetch('https://api.themoviedb.org/3/configuration');
         const data_config = await response_config.json();
@@ -250,9 +251,9 @@ async function getResponseApi() {
         const base_url = data_config.images.base_url;
         const size_img_background = data_config.images.backdrop_sizes[3];
 
-        const generate_number_index_page = Math.floor(Math.random() * 500) + 1;
+        // const generate_number_index_page = Math.floor(Math.random() * 500) + 1;
 
-        const response_movie_description = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&page=${generate_number_index_page}`);
+        const response_movie_description = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&page=${currentPage}`);
         const data_movie_description = await response_movie_description.json();
 
         const movies_id = data_movie_description.results.map(item => {
@@ -273,7 +274,14 @@ async function getResponseApi() {
             return item.overview.length < 200 && item.overview.length > 0 && item.title.length > 0 && item.vote_average >= 7 && item.poster_path && item.backdrop_path !== undefined && item.backdrop_path !== null && item.genres.length > 1;
         });
 
+        if(filter_movies.length === 0) {
+            currentPage++;
+            return await getResponseApi();
+        }
+
         const generate_index_of_movie = Math.floor(Math.random() * filter_movies.length);
+        console.log(filter_movies);
+        console.log(filter_movies[generate_index_of_movie]);
         // const generate_index_for_logo = Math.floor(Math.random() * filter_movies[generate_index_of_movie].production_companies.length);
         const url_background = filter_movies[generate_index_of_movie].backdrop_path;
         const title_movie = filter_movies[generate_index_of_movie].title;
