@@ -270,7 +270,7 @@ async function getResponseApi() {
         }
 
         const filter_movies = movies.filter(item => {
-            return item.overview.length < 300 && item.overview.length > 0 && item.title.length > 0 && item.vote_average >= 7 && item.poster_path && item.backdrop_path !== null && item.genres.length > 1;
+            return item.overview.length < 200 && item.overview.length > 0 && item.title.length > 0 && item.vote_average >= 7 && item.poster_path && item.backdrop_path !== undefined && item.genres.length > 1;
         });
 
         const generate_index_of_movie = Math.floor(Math.random() * filter_movies.length);
