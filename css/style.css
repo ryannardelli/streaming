@@ -36,8 +36,8 @@ body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
 }
 
 .content {
@@ -46,10 +46,12 @@ body {
    background: transparent;
    color: #fff;
    max-width: 800px;
-   backdrop-filter: blur(5px);
-   -webkit-backdrop-filter: blur(5px);
+   backdrop-filter: blur(2px);
+   -webkit-backdrop-filter: blur(2px);
    background: transparent;
    padding: 10px;
+   font-size: 1.3rem;
+   text-shadow: 1px 1px 2px #000;
 }
 
 .container-title-movie {
@@ -557,10 +559,10 @@ body {
 }
 
 .no_result_paragraph {
-    white-space: nowrap;
     font-family: 'Opens Sans';
     font-size: 20px;
     font-weight: 300;
+    min-width: 600px;
 }
 
 .title_of_movie {
@@ -690,6 +692,21 @@ body {
 
 /* tela de celular */
 @media (min-width: 320px) and (max-width: 600px) {
+
+    .container_movie {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        height: auto;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        background-attachment: normal;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+    }
 
     .swiper-slide img {
         display: block;
