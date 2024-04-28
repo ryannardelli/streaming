@@ -750,6 +750,10 @@ body {
         flex-wrap: wrap;
     }
 
+    .container_movie {
+        background-attachment: normal;
+    }
+
     .container-movies-description {
         display: flex;
         justify-content: center;
