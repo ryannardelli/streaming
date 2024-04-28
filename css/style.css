@@ -809,8 +809,7 @@ body {
     }
 
     .btns {
-        justify-content: center;
-        flex-wrap: wrap;
+        margin: 0 auto;
     }
 
     .container-movies-description {
