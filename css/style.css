@@ -115,8 +115,6 @@ body {
 }
 
 .container-about-movies {
-    display: flex;
-    align-items: center;
     padding-top: 1.3rem;
     gap: 5px;
     margin-inline: 10px;

@@ -1,34 +1,100 @@
-const container_movie = document.querySelector('.container_movie');
-const container_serie = document.querySelector('.container_serie');
-const apiKey = 'df475aedfe842e898fa3da1591fa3f01';
-const iframe_video = document.querySelector('.iframe-video');
-const btn_watch_trailer = document.querySelector('#btn-watch-trailer');
-const container_iframe = document.querySelector('.iframe-container');
-const close_button = document.querySelector('.btn-close');
-const swiper_wrapper = document.querySelector('.swiper-wrapper');
-const title_of_movie = document.querySelector('.title_movie');
-const p_overview_about_movie = document.querySelector('.overview-about-movie');
-const date_movie = document.querySelector('.date_movie');
-const vote = document.querySelector('.vote');
-const url_youtube = 'https://www.youtube.com/embed/';
-const genre_one = document.querySelector('.genre_one');
-const genre_two = document.querySelector('.genre_two');
-const poster_img = document.querySelector('.poster_img');
-const logo = document.querySelector('.logo_img');
-const container_about_serie = document.querySelector('.container_about_serie');
-const container_avalation_serie = document.querySelector('.avaliation_serie');
-const section_movies_description = document.querySelector('.container-movies-description');
-const container_logo = document.querySelector('.container-logo');
-const input_search = document.querySelector('#input_search');
+const swiper = new Swiper(".mySwiper", {
+    slidesPerView: 3,
+    centeredSlides: true,
+    spaceBetween: 30,
+    pagination: {
+    el: ".swiper-pagination",
+    type: "fraction",
+    },
 
-function createImg() {
-    const img = document.createElement('img');
-    return img;
+    navigation: {
+    nextEl: ".swiper-button-next",
+    prevEl: ".swiper-button-prev",
+    },
+
+    autoplay: {
+        delay: 2000, // tempo em milissegundos entre cada rolagem
+        disableOnInteraction: false, // para continuar o autoplay mesmo se o usuário interagir com o swiper
+    },
+});
+
+
+const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZjQ3NWFlZGZlODQyZTg5OGZhM2RhMTU5MWZhM2YwMSIsInN1YiI6IjY2MTMxMDRkMjgzZWQ5MDE2MjFkMWY5OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.2QIie_En542SCmRXmSq-W3ohjTV38SlRE91OchVRrr4'
+    }
 };
 
-function createDiv() {
+
+function createIframe() {
+    const iframe = document.createElement('iframe');
+    return iframe;
+}
+
+// Armazenar referências para elementos DOM frequentemente acessados
+const elements = {
+    containerMovie: document.querySelector('.container_movie'),
+    containerSerie: document.querySelector('.container_serie'),
+    iframe_video: document.querySelector('.iframe-video'),
+    btn_watch_trailer: document.querySelector('#btn-watch-trailer'),
+    container_iframe: document.querySelector('.iframe-container'),
+    close_button: document.querySelector('.btn-close'),
+    swiperWrapper: document.querySelector('.swiper-wrapper'),
+    titleOfMovie: document.querySelector('.title_movie'),
+    OverviewAboutMovie: document.querySelector('.overview-about-movie'),
+    dateMovie: document.querySelector('.date_movie'),
+    vote: document.querySelector('.vote'),
+    genreOne: document.querySelector('.genre_one'),
+    genreTwo: document.querySelector('.genre_two'),
+    posterImg: document.querySelector('.poster_img'),
+    containerAboutSerie: document.querySelector('.container_about_serie'),
+    containerAvalationSerie: document.querySelector('.avaliation_serie'),
+    section_movies_description: document.querySelector('.container-movies-description'),
+    containerLogo: document.querySelector('.container-logo'),
+    inputSearch: document.querySelector('#input_search'),
+    iconSearch: document.querySelector('#icon_search'),
+    apiKey: 'df475aedfe842e898fa3da1591fa3f01',
+    url_youtube: 'https://www.youtube.com/embed/',
+};
+
+function insertIframe(src) {
+    const iframe = createIframe();
+    iframe.src = src;
+    iframe.width = '560';
+    iframe.height = '315';
+    iframe.style.border = 'none';
+    elements.iframe_video.appendChild(iframe);
+    return elements.iframe_video;
+}
+
+function createImg(src, alt) {
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = alt;
+    return img;
+}
+
+function createDiv(className) {
     const div = document.createElement('div');
+    div.classList.add(className);
     return div;
+}
+
+function insertSlide(src, alt) {
+    const slide = createDiv('swiper-slide');
+    slide.appendChild(createImg(src, alt));
+    elements.swiperWrapper.appendChild(slide);
+}
+
+async function fetchApi(url, options) {
+    try {
+        const response = await fetch(url, options);
+        return await response.json();
+    } catch(e) {
+        console.log(e)
+    }
 };
 
 function createH1() {
@@ -41,31 +107,39 @@ function createParagraph() {
     return p;
 };
 
-function insertDivWithContent(src_img, alt_img) {
-    const div = createDiv();
+function insert_img_about_movie(url) {
     const img = createImg();
-    img.src = src_img;
-    img.alt = alt_img;
-
-    div.appendChild(img);
-    div.classList.add('swiper-slide');
-    return div;
+    img.src = url;
+    return img;
 };
 
-function createIframe() {
-    const iframe = document.createElement('iframe');
-    return iframe;
-}
+function insert_title_movie(title_movie) {
+    const h1 = createH1();
+    h1.innerHTML = title_movie;
+    return h1;
 
-function insertIframe(src) {
-    const iframe = createIframe();
-    iframe.src = src;
-    iframe.width = '560';
-    iframe.height = '315';
-    iframe.style.border = 'none';
-    iframe_video.appendChild(iframe);
-    return iframe_video;
-}
+};
+
+function insert_date_movie(date_movie) {
+    const p = createParagraph();
+    p.innerHTML = date_movie;
+    return p;
+};
+
+function insert_posters_movies(url_img, title, date) {
+    const div = createDiv();
+    const img_movie = insert_img_about_movie(url_img);
+    const title_movie = insert_title_movie(title);
+    const date_movie = insert_date_movie(date);
+
+    title_movie.classList.add('title_of_movie');
+
+    div.appendChild(img_movie);
+    div.appendChild(title_movie);
+    div.appendChild(date_movie);
+
+    return div;
+};
 
 function inserH1_about_serie(title) {
     const h1 = createH1();
@@ -133,358 +207,224 @@ function insertTitle_and_description_about_serie(title, overview) {
     return div;
 };
 
-function insert_img_about_movie(url) {
-    const img = createImg();
-    img.src = url;
-    return img;
+async function getConfigApi() {
+    const config = await fetchApi('https://api.themoviedb.org/3/configuration', options);
+    return config;
 };
 
-function insert_title_movie(title_movie) {
-    const h1 = createH1();
-    h1.innerHTML = title_movie;
-    return h1;
-
+async function getBaseUrl() {
+    const response = await getConfigApi();
+    return response.images.base_url;
 };
 
-function insert_date_movie(date_movie) {
-    const p = createParagraph();
-    p.innerHTML = date_movie;
-    return p;
+async function getBackdropSize() {
+    const response = await getConfigApi();
+    return response.images.backdrop_sizes[3];
 };
 
-function insert_posters_movies(url_img, title, date) {
-    const div = createDiv();
-    const img_movie = insert_img_about_movie(url_img);
-    const title_movie = insert_title_movie(title);
-    const date_movie = insert_date_movie(date);
-
-    title_movie.classList.add('title_of_movie');
-
-    div.appendChild(img_movie);
-    div.appendChild(title_movie);
-    div.appendChild(date_movie);
-
-    return div;
+async function getSizePoster() {
+    const response = await getConfigApi();
+    return response.images.poster_sizes[4];
 };
 
-const swiper = new Swiper(".mySwiper", {
-    slidesPerView: 3,
-    centeredSlides: true,
-    spaceBetween: 30,
-    pagination: {
-    el: ".swiper-pagination",
-    type: "fraction",
-    },
-
-    navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
-    },
-
-    autoplay: {
-        delay: 2000, // tempo em milissegundos entre cada rolagem
-        disableOnInteraction: false, // para continuar o autoplay mesmo se o usuário interagir com o swiper
-    },
-});
-
-
-const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZjQ3NWFlZGZlODQyZTg5OGZhM2RhMTU5MWZhM2YwMSIsInN1YiI6IjY2MTMxMDRkMjgzZWQ5MDE2MjFkMWY5OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.2QIie_En542SCmRXmSq-W3ohjTV38SlRE91OchVRrr4'
-    }
+async function getSizePosterOfSlide() {
+    const response = await getConfigApi();
+    return response.images.poster_sizes[6];
 };
 
-async function getResponseApi() {
+async function catchPosterSizeImgOfMenu() {
+    const response = await getConfigApi();
+    return response.images.poster_sizes[2];
+};
+
+async function getMovies() {
+    const response = await fetchApi(`https://api.themoviedb.org/3/movie/top_rated?api_key=${elements.apiKey}&language=pt-BR&page=${Math.floor(Math.random() * 500)}`, options);
+    return response.results;
+};
+
+async function setMovies() {
+    const response = await getMovies();
+    return response;
+};
+
+async function getDetailsMovie(movieId) {
+    const response = await fetchApi(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${elements.apiKey}&language=pt-BR`, options);
+    return response;
+};
+
+async function getVideoId(movieId) {
+    const response = await fetchApi(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${elements.apiKey}&language=pt-BR`, options);
+    return response.results.filter(video => video.type.toLowerCase().includes('trailer'));
+};
+
+async function setDetailsId(movieId) {
+    const response = await getDetailsMovie(movieId);
+    return response;
+};
+
+async function catchTopRatedSeries() {
+    const response = await fetchApi(`https://api.themoviedb.org/3/tv/top_rated?api_key=${elements.apiKey}&language=pt-BR`, options);
+    return response.results.filter(serie => serie.backdrop_path && serie.name && serie.overview.length < 200 && serie.overview.length > 0 && serie.vote_average && serie.backdrop_path !== undefined && serie.backdrop_path !== null);
+}
+
+async function catchSerieDetails(serieId) {
+    const response = await fetchApi(`https://api.themoviedb.org/3/tv/${serieId}?api_key=${elements.apiKey}&language=pt-BR`, options);
+    return response;
+}
+
+async function updateSerieDetails(serieDetails) {
+    const base_url = await getBaseUrl();
+    const size_img = await getBackdropSize();
+    elements.containerSerie.style.backgroundImage = `url('${base_url}${size_img}${serieDetails.backdrop_path}')`;
+    elements.containerAboutSerie.appendChild(insertTitle_and_description_about_serie(serieDetails.name, serieDetails.overview));
+    elements.containerAvalationSerie.appendChild(insert_informations_about_serie('&#9733', `${serieDetails.vote_average.toFixed(1).replace(/\./g, ',')}`, `Temporadas ${serieDetails.number_of_seasons}`, `Episódios ${serieDetails.number_of_episodes}`));
+}
+
+async function updateDetails(movieDetails) {
+    const base_url = await getBaseUrl();
+    const backdrop_size_img = await getBackdropSize();
+    const size_poster = await getSizePoster();
+    elements.containerMovie.style.backgroundImage = `url('${base_url}${backdrop_size_img}${movieDetails.backdrop_path}')`;
+    elements.posterImg.src = `${base_url}${size_poster}${movieDetails.poster_path}`;
+    elements.posterImg.alt = movieDetails.title;
+    elements.titleOfMovie.textContent = movieDetails.title;
+    elements.OverviewAboutMovie.textContent = movieDetails.overview;
+    elements.dateMovie.textContent = movieDetails.release_date.slice(0, 4);
+    elements.vote.textContent = movieDetails.vote_average.toFixed(1).replace(/\./g, ',');
+    elements.genreOne.textContent = movieDetails.genres[0].name;
+    elements.genreTwo.textContent = movieDetails.genres[1].name;
+};
+
+async function updateRandomSerieSection() {
     try {
-        let posters = [];
-        let name_of_movies = [];
-        let src_imgs = [];
-
-        const response_config = await fetch('https://api.themoviedb.org/3/configuration', options);
-        const data_configuration = await response_config.json();
-        const size_img = data_configuration.images.poster_sizes[6];
-        const base_url_img = data_configuration.images.base_url;
-
-        const generate_index_page = Math.floor(Math.random() * 500);
-
-        const response_api = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}&language=pt-BR&page=${generate_index_page}`, options);
-
-        const data_api = await response_api.json();
-
-        const filter_poster = data_api.results.filter(item => {        
-           return item.poster_path && item.title;
-        });
-
-        filter_poster.forEach(item => {
-            posters.push(item.poster_path);
-        });
-
-        filter_poster.forEach(item => {
-            name_of_movies.push(item.title);
-        });
-
-        for(let url of posters) {
-            src_imgs.push(base_url_img + size_img + url);
-        }
-
-        src_imgs.forEach((element, index) => {
-            const src = src_imgs[index];
-            const alt = name_of_movies[index];
-            swiper_wrapper.appendChild(insertDivWithContent(src, alt));
-        });
-
-    } catch(error) {
-        console.log(error);
-    }
-
-    try {
-        let trailers = [];
-        let ids = [];
-        let movies = [];
-        let currentPage = Math.floor(Math.random() * 500) + 1;
-
-        const response_config = await fetch('https://api.themoviedb.org/3/configuration');
-        const data_config = await response_config.json();
-
-        const base_url = data_config.images.base_url;
-        const size_img_background = data_config.images.backdrop_sizes[3];
-
-        const response_movie_description = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&page=${currentPage}`);
-        const data_movie_description = await response_movie_description.json();
-
-        const movies_id = data_movie_description.results.map(item => {
-            return item;
-        });
-
-        movies_id.forEach(item => {
-            ids.push(item.id);
-        });
-
-        for (let id of ids) {
-            const response_description = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=pt-BR`);
-            const data_description = await response_description.json();
-            movies.push(data_description);
-        }
-
-        const filter_movies = movies.filter(item => {
-            return item.overview.length < 200 && item.overview.length > 0 && item.title.length > 0 && item.vote_average >= 7 && item.poster_path && item.backdrop_path !== undefined && item.backdrop_path !== null && item.genres.length > 1;
-        });
-
-        if(filter_movies.length === 0) {
-            currentPage++;
-            return await getResponseApi();
-        }
-
-        const generate_index_of_movie = Math.floor(Math.random() * filter_movies.length);
-        const url_background = filter_movies[generate_index_of_movie].backdrop_path;
-        const title_movie = filter_movies[generate_index_of_movie].title;
-        const overview_movie = filter_movies[generate_index_of_movie].overview;
-        const poster_size = data_config.images.poster_sizes[4];
-        const url_poster = filter_movies[generate_index_of_movie].poster_path;
-        const date = filter_movies[generate_index_of_movie].release_date.slice(0, 4);
-        const vote_population = filter_movies[generate_index_of_movie].vote_average.toFixed(1).replace(/\./g, ',');
-        const genre_one_movie = filter_movies[generate_index_of_movie].genres[0].name;
-        const genre_two_movie = filter_movies[generate_index_of_movie].genres[1].name;
-        const id_movie = filter_movies[generate_index_of_movie].id;
-
-        const response_video = await fetch(`https://api.themoviedb.org/3/movie/${id_movie}/videos?api_key=${apiKey}&language=pt-BR`);
-        const data_video = await response_video.json();
-
-        for(let item of data_video.results) {
-            if(item.type.toLowerCase().includes('trailer')) {
-                trailers.push(item);
-            }
-        }
-
-        function set_url_trailer() {
-            for(let trailer of trailers) {
-    
-                let key;
-    
-                if(trailer.name.toLowerCase().includes('dublado')) {
-                    btn_watch_trailer.style.display = 'block';
-                    key = trailer.key;
-                    insertIframe(url_youtube + key);
-                    return
-                }
-
-                if (trailer.name.toLowerCase().includes('legendado')) {
-                    btn_watch_trailer.style.display = 'block';
-                    key = trailer.key;
-                    insertIframe(url_youtube + key);
-                    return
-                }
-
-                btn_watch_trailer.style.display = 'block';
-                key = trailer.key;
-                insertIframe(url_youtube + key);
-                return;
-    
-            }
-        }
-
-        set_url_trailer();
-
-        const url_of_img_background_movie = base_url + size_img_background + url_background;
-
-        // insere imagem no background da sessão do filme
-        container_movie.style.backgroundImage = `url('${url_of_img_background_movie}')`;
-
-        // insere titulo e overview do filme
-        title_of_movie.innerHTML = title_movie;
-        p_overview_about_movie.innerHTML = overview_movie;
-
-        // insere o poster do filme e o texto alternativo
-        poster_img.src = base_url + poster_size + url_poster;
-        poster_img.alt = title_movie;
-
-        // insere data do filme
-        date_movie.innerHTML = date;
-
-        // insere classificação do filme
-        vote.innerHTML = vote_population;
-
-        // insere gêneros do filme
-        genre_one.innerHTML = genre_one_movie;
-        genre_two.innerHTML = genre_two_movie;
-
-    } catch(error) {
-        console.log(error);
-    }
-
-    try {
-        const response_pages = await fetch(`https://api.themoviedb.org/3/tv/top_rated?api_key=${apiKey}&language=pt-BR`);
-        const data_page_api = await response_pages.json();
-
-        const response_api_config = await fetch('https://api.themoviedb.org/3/configuration');
-        const data_response_config = await response_api_config.json();
-
-        const total_page = data_page_api.total_pages;
-
-        const generate_index_page = Math.floor(Math.random() * total_page);
-
-        const response_api_serie = await fetch(`https://api.themoviedb.org/3/tv/top_rated?api_key=${apiKey}&language=pt-BR&page=${generate_index_page}`, options);
-        const data_api_serie = await response_api_serie.json();
-
-        const filter_serie = data_api_serie.results.filter(item => {
-            return item.backdrop_path && item.name && item.overview.length < 200 && item.overview.length > 0 && item.vote_average && item.backdrop_path !== undefined && item.backdrop_path !== null;
-        });
-
-        const generate_index_of_serie = Math.floor(Math.random() * filter_serie.length);
-        const url_background = filter_serie[generate_index_of_serie].backdrop_path;
-        const base_url_to_serie = data_response_config.images.base_url;
-        const size_backgroud = data_response_config.images.backdrop_sizes[3];
-        const full_url_background = base_url_to_serie + size_backgroud + url_background;
-        const title_serie = filter_serie[generate_index_of_serie].name;
-        const overview_serie = filter_serie[generate_index_of_serie].overview;
-        const id_serie = filter_serie[generate_index_of_serie].id;
-
-        // insere url no background da imagem da série
-        container_serie.style.backgroundImage = `url('${full_url_background}')`;
-
-        // insere título e overview da série
-        container_about_serie.appendChild(insertTitle_and_description_about_serie(title_serie, overview_serie));
-
-
-        // const url_image_serie = data_response_config.images.base_url + data_response_config.images.backdrop_sizes[3] + data_api_serie.results[1].backdrop_path;
-
-        const response_id_serie = await fetch(`https://api.themoviedb.org/3/tv/${id_serie}?api_key=${apiKey}&language=pt-BR`);
-        const data_response_id = await response_id_serie.json();
-
-        // insere a avaliação da série, número de temporadas e episódios da série
-
-         container_avalation_serie.appendChild(insert_informations_about_serie('&#9733', `${data_response_id.vote_average.toFixed(1).replace(/\./g, ',')}`, `Temporadas ${data_response_id.number_of_seasons}`, `Episódios ${data_response_id.number_of_episodes}`));
-
-    } catch(error) {
-        console.log(error);
-    }
-
-    try {
-        const response_pages = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=pt-BR`);
-        const data_pages = await response_pages.json();
-
-        const total_pages = data_pages.total_pages;
-        const generate_index_page = Math.floor(Math.random() * total_pages);
-
-        const response_movies = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=pt-BR&page=${generate_index_page}`);
-        const data_movies = await response_movies.json();
-
-        const response_api_config = await fetch('https://api.themoviedb.org/3/configuration');
-        const data_response_config = await response_api_config.json();
-
-        const base_url = data_response_config.images.base_url;
-        const size = data_response_config.images.poster_sizes[2];
-
-        let movies = [];
-        let src_imgs = [];
-        let element_movies = [];
-        let title_movies = [];
-        let date_movies_year = [];
-
-        movies.push(data_movies.results);
-
-        movies.forEach(movies => {
-            for(let movie of movies) {
-                element_movies.push(movie);
-            }
-        });
-
-        element_movies.filter((item => {
-            src_imgs.push(data_response_config.images.base_url + data_response_config.images.poster_sizes[2] + item.poster_path);
-        }));
-
-
-        element_movies.filter((item => {
-            title_movies.push(item.title);
-        }));
-
-        element_movies.filter((item => {
-            date_movies_year.push(item.release_date.slice(0, 4));
-        }));
-
-        // insere imagem, titulo, data dos filmes
-        element_movies.forEach((element, index) => {
-            const src = src_imgs[index];
-            const title = title_movies[index];
-            const date_year = date_movies_year[index];
-            section_movies_description.appendChild(insert_posters_movies(src, title, date_year));
-        })
-
-        // script que filtra os elementos a partir da pesquisa do input
-        input_search.addEventListener('input', (e) => {
-            const valueSearch = e.target.value.trim();
-            const filter_title_movie = element_movies.filter(item => item.title.toLowerCase().includes(valueSearch));
-            section_movies_description.innerHTML = '';
-
-            if(filter_title_movie.length === 0) {
-                const noResult = document.createElement('p');
-                noResult.classList.add('no_result_paragraph');
-                noResult.innerHTML = 'Nenhum resultado foi encontrado';
-                section_movies_description.appendChild(noResult);
-            } else {
-                filter_title_movie.forEach(movie => {
-                    const src = base_url + size + movie.poster_path;
-                    section_movies_description.appendChild(insert_posters_movies(src, movie.title, movie.release_date.slice(0, 4)));
-                })
-            }
-        });
-
-    } catch(error) {
-        console.log(error);
+        const topRatedSeries = await catchTopRatedSeries();
+        const randomSerieIndex = Math.floor(Math.random() * topRatedSeries.length);
+        const randomSerie = topRatedSeries[randomSerieIndex];
+        const serieDetails = await catchSerieDetails(randomSerie.id);
+        updateSerieDetails(serieDetails);
+    } catch (error) {
+        console.error('Erro ao buscar e atualizar série aleatória:', error);
     }
 }
 
-getResponseApi();
+async function updateMovieRandom() {
+    try {   
+        const movies = await setMovies();
+        const filter_movies = movies.filter(movie => {
+            return movie.title && movie.overview.length > 0 && movie.overview.length < 200 && movie.genre_ids.length > 1 && movie.release_date && movie.backdrop_path !== null && movie.backdrop_path !== undefined;
+        });
+
+        let randomMovieIndex =  Math.floor(Math.random() * filter_movies.length);
+
+        if(filter_movies.length === 0) {
+            randomMovieIndex++;
+            return await init();
+        }
+        
+        const randomMovie = filter_movies[randomMovieIndex];
+        const movieDetails = await setDetailsId(randomMovie.id);
+        const movieVideo = await getVideoId(randomMovie.id);
+        set_url_trailer(movieVideo);
+        updateDetails(movieDetails);
+    } catch(e) {
+        console.log(e);
+    }
+};
+
+function set_url_trailer(video) {
+    for(let trailer of video) {
+        let key;
+
+        if(trailer.name.toLowerCase().includes('dublado')) {
+            elements.btn_watch_trailer.style.display = 'block';
+            key = trailer.key;
+            insertIframe(elements.url_youtube + key);
+            return
+        }
+
+        if (trailer.name.toLowerCase().includes('legendado')) {
+            elements.btn_watch_trailer.style.display = 'block';
+            key = trailer.key;
+            insertIframe(elements.url_youtube + key);
+            return
+        }
+
+        elements.btn_watch_trailer.style.display = 'block';
+        key = trailer.key;
+        insertIframe(elements.url_youtube + key);
+        return;
+    }
+}
+
+async function getMoviesOfMenu() {
+    const movies = await getMovies();
+    return movies;
+};
+
+async function setMoviesOfMenu() {
+    let src_imgs = [];
+    const base_url = await getBaseUrl();
+    const size_img = await catchPosterSizeImgOfMenu();
+    const movies = await getMoviesOfMenu();
+    const date_movies = movies.map(item => item.release_date.slice(0, 4));
+    const title_movies = movies.map(item => item.title);
+    const urls_posters = movies.map(item => item.poster_path);
+    urls_posters.forEach(url => {
+        src_imgs.push(base_url + size_img + url);
+    });
+
+    src_imgs.forEach((src, index) => {
+        const title_movie = title_movies[index];
+        const date_movie = date_movies[index];
+        elements.section_movies_description.appendChild(insert_posters_movies(src, title_movie, date_movie));
+    });
+};
+
+async function getMoviesPopular() {
+    const response = await fetchApi(`https://api.themoviedb.org/3/movie/popular?api_key=${elements.apiKey}&language=pt-BR&page=${Math.floor(Math.random() * 500)}`, options);
+    return response.results.filter(movie => movie.title && movie.poster_path);
+};
+
+async function setMoviePopular() {
+    const movies = await getMoviesPopular();
+    insertMoviesInSlide(movies);
+};
+
+async function insertMoviesInSlide(moviesPopular) {
+    const base_url = await getBaseUrl();
+    const poster_size = await getSizePosterOfSlide();
+    let src_imgs = [];
+    const title_movie = moviesPopular.map(movie => movie.title);
+    const posters_movie = moviesPopular.map(movie => movie.poster_path);
+
+    posters_movie.forEach((poster_path) => {
+        src_imgs.push(base_url + poster_size + poster_path);
+    });
+
+    src_imgs.forEach((src, index) => {
+        const alt = title_movie[index];
+        insertSlide(src, alt);
+    });
+};
+
+async function init() {
+    try {
+        await Promise.all([updateMovieRandom(), setMoviePopular(), setMoviesOfMenu(), updateRandomSerieSection()]);
+    } catch (error) {
+        console.error('Erro ao iniciar a aplicação:', error);
+    }
+}
+
+init();
 
 // script que mostra e esconde o iframe
-btn_watch_trailer.addEventListener('click', () => {
-    container_iframe.style.display = 'block';
+elements.btn_watch_trailer.addEventListener('click', (event) => {
+    event.preventDefault();
+    elements.container_iframe.style.display = 'block';
 });
 
-close_button.addEventListener('click', () => {
-    container_iframe.style.display = 'none';
+elements.close_button.addEventListener('click', () => {
+    elements.container_iframe.style.display = 'none';
 });
 
 // script do sidebar
@@ -493,14 +433,4 @@ const sidebar = document.querySelector('.sidebar');
 
 btn_open.addEventListener('click', () => {
     sidebar.classList.toggle('open-sidebar');
-});
-
-// script que coloca foco no input de pesquisa quando acionado
-document.querySelector('#icon_search').addEventListener('mouseover', () => {
-    input_search.focus();
-});
-
-// script que remove o foco no input quando o usuário tirar o mouse do ícone
-document.querySelector('#icon_search').addEventListener('mouseout', () => {
-    input_search.blur();
 });
