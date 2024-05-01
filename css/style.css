@@ -701,7 +701,7 @@ body {
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
-        background-attachment: normal;
+        background-attachment: fixed;
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
     }
