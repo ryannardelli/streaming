@@ -53,7 +53,7 @@ const elements = {
     containerAvalationSerie: document.querySelector('.avaliation_serie'),
     section_movies_description: document.querySelector('.container-movies-description'),
     containerLogo: document.querySelector('.container-logo'),
-    inputSearch: document.querySelector('#input_search'),
+    input_search: document.querySelector('#input_search'),
     iconSearch: document.querySelector('#icon_search'),
     apiKey: 'df475aedfe842e898fa3da1591fa3f01',
     url_youtube: 'https://www.youtube.com/embed/',
@@ -309,10 +309,8 @@ async function updateRandomSerieSection() {
             return await init();
         }
 
-        
         const randomSerie = filter_serie[randomSerieIndex];
         const serieDetails = await catchSerieDetails(randomSerie.id);
-        console.log(serieDetails);
         updateSerieDetails(serieDetails);
     } catch (error) {
         console.error('Erro ao buscar e atualizar série aleatória:', error);
@@ -330,7 +328,7 @@ async function updateMovieRandom() {
 
         if(filter_movies.length === 0) {
             randomMovieIndex++;
-            // return await init();
+            return await init();
         }
         
         const randomMovie = filter_movies[randomMovieIndex];
@@ -419,15 +417,39 @@ async function insertMoviesInSlide(moviesPopular) {
     });
 };
 
+async function insertPosterWithUserInput() {
+    const elements_movies = await setMovies();
+    const base_url = await getBaseUrl();
+    const size = await catchPosterSizeImgOfMenu();
+    elements.input_search.addEventListener('input', (event) => {
+        const valueSearch = event.target.value.trim();
+        const filter_title_movie = elements_movies.filter(item => item.title.toLowerCase().includes(valueSearch));
+            elements.section_movies_description.innerHTML = '';
+
+            if(filter_title_movie.length === 0) {
+                const noResult = document.createElement('p');
+                noResult.classList.add('no_result_paragraph');
+                noResult.innerHTML = 'Nenhum resultado foi encontrado';
+                elements.section_movies_description.appendChild(noResult);
+            } else {
+                filter_title_movie.forEach(movie => {
+                    const src = base_url + size + movie.poster_path;
+                    elements.section_movies_description.appendChild(insert_posters_movies(src, movie.title, movie.release_date.slice(0, 4)));
+                })
+            }
+    });
+};
+
+updateMovieRandom();
+
 async function init() {
     try {
-        await Promise.all([setMoviePopular(), setMoviesOfMenu(), updateRandomSerieSection()]);
+        await Promise.all([setMoviePopular(), setMoviesOfMenu(), updateRandomSerieSection(), insertPosterWithUserInput()]);
     } catch (error) {
         console.error('Erro ao iniciar a aplicação:', error);
     }
 }
 
-updateMovieRandom();
 init();
 
 // script que mostra e esconde o iframe
@@ -446,4 +468,14 @@ const sidebar = document.querySelector('.sidebar');
 
 btn_open.addEventListener('click', () => {
     sidebar.classList.toggle('open-sidebar');
+});
+
+// script que coloca foco no input de pesquisa quando acionado
+document.querySelector('#icon_search').addEventListener('mouseover', () => {
+    elements.input_search.focus();
+});
+
+// script que remove o foco no input quando o usuário tirar o mouse do ícone
+document.querySelector('#icon_search').addEventListener('mouseout', () => {
+    elements.input_search.blur();
 });
