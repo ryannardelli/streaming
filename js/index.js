@@ -440,11 +440,11 @@ async function insertPosterWithUserInput() {
     });
 };
 
-updateMovieRandom();
-
 async function init() {
     try {
-        await Promise.all([setMoviePopular(), setMoviesOfMenu(), updateRandomSerieSection(), insertPosterWithUserInput()]);
+        await Promise.all([setMoviePopular(), setMoviesOfMenu(), insertPosterWithUserInput()]);
+        await updateMovieRandom();
+        await updateRandomSerieSection();
     } catch (error) {
         console.error('Erro ao iniciar a aplicação:', error);
     }
