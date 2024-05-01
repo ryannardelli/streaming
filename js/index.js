@@ -263,8 +263,8 @@ async function setDetailsId(movieId) {
 };
 
 async function catchTopRatedSeries() {
-    const response = await fetchApi(`https://api.themoviedb.org/3/tv/top_rated?api_key=${elements.apiKey}&language=pt-BR`, options);
-    return response.results.filter(serie => serie.backdrop_path && serie.name && serie.overview.length < 200 && serie.overview.length > 0 && serie.vote_average && serie.backdrop_path !== undefined && serie.backdrop_path !== null);
+    const response = await fetchApi(`https://api.themoviedb.org/3/tv/top_rated?api_key=${elements.apiKey}&language=pt-BR&page=${Math.floor(Math.random() * 500)}`, options);
+    return response.results;
 }
 
 async function catchSerieDetails(serieId) {
@@ -298,9 +298,21 @@ async function updateDetails(movieDetails) {
 async function updateRandomSerieSection() {
     try {
         const topRatedSeries = await catchTopRatedSeries();
-        const randomSerieIndex = Math.floor(Math.random() * topRatedSeries.length);
-        const randomSerie = topRatedSeries[randomSerieIndex];
+        const filter_serie = topRatedSeries.filter(serie => {
+            return serie.backdrop_path && serie.name && serie.overview.length < 200 && serie.overview.length > 0 && serie.vote_average && serie.backdrop_path !== undefined && serie.backdrop_path !== null;
+        });
+
+        let randomSerieIndex = Math.floor(Math.random() * filter_serie.length);
+
+        if(filter_serie.length === 0) {
+            randomSerieIndex++;
+            return await init();
+        }
+
+        
+        const randomSerie = filter_serie[randomSerieIndex];
         const serieDetails = await catchSerieDetails(randomSerie.id);
+        console.log(serieDetails);
         updateSerieDetails(serieDetails);
     } catch (error) {
         console.error('Erro ao buscar e atualizar série aleatória:', error);
@@ -318,7 +330,7 @@ async function updateMovieRandom() {
 
         if(filter_movies.length === 0) {
             randomMovieIndex++;
-            return await init();
+            // return await init();
         }
         
         const randomMovie = filter_movies[randomMovieIndex];
@@ -409,12 +421,13 @@ async function insertMoviesInSlide(moviesPopular) {
 
 async function init() {
     try {
-        await Promise.all([updateMovieRandom(), setMoviePopular(), setMoviesOfMenu(), updateRandomSerieSection()]);
+        await Promise.all([setMoviePopular(), setMoviesOfMenu(), updateRandomSerieSection()]);
     } catch (error) {
         console.error('Erro ao iniciar a aplicação:', error);
     }
 }
 
+updateMovieRandom();
 init();
 
 // script que mostra e esconde o iframe
