@@ -238,7 +238,7 @@ async function catchPosterSizeImgOfMenu() {
 };
 
 async function getMovies() {
-    const response = await fetchApi(`https://api.themoviedb.org/3/movie/top_rated?api_key=${elements.apiKey}&language=pt-BR&page=${Math.floor(Math.random() * 500)}`, options);
+    const response = await fetchApi(`https://api.themoviedb.org/3/movie/top_rated?api_key=${elements.apiKey}&language=pt-BR&page=${Math.floor(Math.random() * 100)}`, options);
     return response.results;
 };
 
@@ -263,7 +263,7 @@ async function setDetailsId(movieId) {
 };
 
 async function catchTopRatedSeries() {
-    const response = await fetchApi(`https://api.themoviedb.org/3/tv/top_rated?api_key=${elements.apiKey}&language=pt-BR&page=${Math.floor(Math.random() * 500)}`, options);
+    const response = await fetchApi(`https://api.themoviedb.org/3/tv/top_rated?api_key=${elements.apiKey}&language=pt-BR&page=${Math.floor(Math.random() * 100)}`, options);
     return response.results;
 }
 
@@ -391,7 +391,7 @@ async function setMoviesOfMenu() {
 };
 
 async function getMoviesPopular() {
-    const response = await fetchApi(`https://api.themoviedb.org/3/movie/popular?api_key=${elements.apiKey}&language=pt-BR&page=${Math.floor(Math.random() * 500)}`, options);
+    const response = await fetchApi(`https://api.themoviedb.org/3/movie/popular?api_key=${elements.apiKey}&language=pt-BR&page=${Math.floor(Math.random() * 100)}`, options);
     return response.results.filter(movie => movie.title && movie.poster_path);
 };
 
